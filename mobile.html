@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🏖️ Prasoon's Bachelor Bash — Mobile Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+:root {
+  --bg: #050515;
+  --bg-card: #0d0c26;
+  --bg-card2: #141238;
+  --pink: #ff2a7a;
+  --pink-glow: rgba(255, 42, 122, 0.45);
+  --cyan: #00f0ff;
+  --cyan-glow: rgba(0, 240, 255, 0.45);
+  --gold: #ffbe0b;
+  --purple: #8338ec;
+  --blue: #3a86ff;
+  --green: #06d6a0;
+  --text: #f0f2ff;
+  --text-dim: #8b97c6;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-neon: rgba(255, 42, 122, 0.35);
+  --dock-height: 64px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  padding-bottom: calc(var(--dock-height) + 70px);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* TOP APP BAR */
+.mobile-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1.2rem;
+  background: rgba(5, 5, 21, 0.94);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-neon);
+}
+
+.mobile-logo {
+  font-family: 'Bungee', cursive;
+  font-size: 1.05rem;
+  background: linear-gradient(135deg, var(--pink), var(--gold), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mobile-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-icon-header {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-share-wa {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+}
+
+/* STORY AVATARS BAR */
+.story-bar {
+  display: flex;
+  gap: 0.9rem;
+  padding: 0.9rem 1.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border);
+}
+.story-bar::-webkit-scrollbar { display: none; }
+
+.story-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.story-ring {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, var(--pink), var(--gold), var(--cyan));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bg);
+}
+
+.story-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+/* HERO SECTION */
+.m-hero {
+  padding: 1.8rem 1.2rem 1.2rem;
+  text-align: center;
+}
+
+.m-badge {
+  display: inline-block;
+  background: rgba(255, 42, 122, 0.15);
+  border: 1px solid var(--pink);
+  color: var(--pink);
+  padding: 0.3rem 0.9rem;
+  border-radius: 50px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.8rem;
+}
+
+.m-title {
+  font-family: 'Bungee', cursive;
+  font-size: 2.4rem;
+  line-height: 1.05;
+  background: linear-gradient(135deg, #fff 0%, var(--pink) 40%, var(--gold) 75%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.4rem;
+}
+
+.m-sub {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 0.6rem;
+}
+
+.m-dates {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--cyan);
+  background: rgba(0, 240, 255, 0.08);
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  margin-bottom: 1.2rem;
+}
+
+/* QUICK STATS CHIPS */
+.m-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0 1.2rem 1.5rem;
+}
+
+.m-stat-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.8rem 0.4rem;
+  text-align: center;
+}
+
+.m-stat-num {
+  font-family: 'Bungee', cursive;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.m-stat-lbl {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+/* SECTION WRAPPER */
+.m-section {
+  padding: 1.4rem 1.2rem;
+}
+
+.m-stag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--pink);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.m-stitle {
+  font-family: 'Bungee', cursive;
+  font-size: 1.55rem;
+  margin-bottom: 0.8rem;
+}
+
+/* MOBILE FLIGHT SIMULATOR MAP */
+.m-map-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-neon);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.m-sim-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(16, 16, 51, 0.95);
+  border-bottom: 1px solid var(--border);
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.m-sim-play {
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.m-step-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.m-step-pill.active {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.m-map-viewport {
+  position: relative;
+  height: 380px;
+  width: 100%;
+}
+
+#m-map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Mobile HUD Overlay */
+.m-hud {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: rgba(9, 9, 31, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-neon);
+  border-radius: 12px;
+  padding: 0.6rem 0.8rem;
+  width: 190px;
+  pointer-events: none;
+}
+
+.m-hud-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+
+.m-hud-stat {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--cyan);
+}
+
+.m-hud-prog {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-top: 0.4rem;
+  overflow: hidden;
+}
+
+.m-hud-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--cyan), var(--pink));
+}
+
+.m-toast {
+  position: absolute;
+  bottom: 12px;
+  left: 10px;
+  right: 10px;
+  z-index: 1001;
+  background: linear-gradient(135deg, rgba(255, 42, 122, 0.95), rgba(131, 56, 236, 0.95));
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 10px 30px var(--pink-glow);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.35s ease;
+  pointer-events: none;
+}
+
+.m-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* SWIPEABLE BOARDING PASSES */
+.m-cards-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0.5rem 0 1rem;
+  scrollbar-width: none;
+}
+.m-cards-scroll::-webkit-scrollbar { display: none; }
+
+.m-tcard {
+  flex: 0 0 88%;
+  scroll-snap-align: center;
+  background: linear-gradient(135deg, var(--bg-card), #170d36);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.m-tcard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--pink), var(--cyan));
+}
+
+.m-tcard-head {
+  padding: 1rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.m-tcard-airline { font-weight: 700; font-size: 0.88rem; }
+.m-tcard-leg {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--cyan);
+  background: rgba(0, 240, 255, 0.1);
+  padding: 0.15rem 0.55rem;
+  border-radius: 50px;
+}
+
+.m-tcard-route {
+  padding: 1.2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.m-city { text-align: center; }
+.m-code { font-family: 'Bungee', cursive; font-size: 1.7rem; line-height: 1; }
+.m-time { font-family: 'Space Mono', monospace; font-size: 0.95rem; font-weight: 700; color: var(--pink); margin-top: 0.2rem; }
+.m-date { font-size: 0.65rem; color: var(--cyan); }
+
+.m-mid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+.m-rline {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--cyan));
+  margin: 0.4rem 0;
+}
+
+.m-tcard-foot {
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.35);
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+
+/* FLOATING AUDIO CONTROLLER DOCK */
+.m-audio-dock {
+  position: fixed;
+  bottom: calc(var(--dock-height) + 8px);
+  left: 12px;
+  right: 12px;
+  z-index: 9999;
+  background: linear-gradient(135deg, #18143d, #0e0d2b);
+  border: 1px solid var(--border-neon);
+  border-radius: 50px;
+  padding: 0.55rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--pink-glow);
+}
+
+.m-audio-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  overflow: hidden;
+  flex: 1;
+}
+
+.m-audio-disc {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #04030d;
+  border: 2px dashed var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.m-audio-disc.spinning {
+  animation: spinTape 1.6s linear infinite;
+}
+
+@keyframes spinTape { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.m-audio-info { overflow: hidden; }
+.m-audio-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.m-audio-sub { font-size: 0.65rem; color: var(--text-dim); }
+
+.m-audio-btn {
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff;
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* BOTTOM NAVIGATION APP DOCK */
+.m-app-dock {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--dock-height);
+  background: rgba(5, 5, 21, 0.96);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 10000;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.62rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.dock-item.active, .dock-item:hover {
+  color: var(--pink);
+}
+
+.dock-icon { font-size: 1.25rem; }
+
+/* MOBILE ITINERARY ACCORDION */
+.m-tl-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 0.9rem;
+  overflow: hidden;
+}
+
+.m-tl-head {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.m-tl-day { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--gold); font-weight: 700; }
+.m-tl-title { font-size: 0.88rem; font-weight: 700; margin-top: 0.15rem; }
+.m-tl-body { padding: 0 1rem 1rem; display: none; }
+.m-tl-body.open { display: block; }
+.m-tl-desc { font-size: 0.78rem; color: var(--text-dim); margin-bottom: 0.8rem; line-height: 1.5; }
+
+.m-tl-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+}
+
+.m-chip {
+  display: inline-block;
+  padding: 0.22rem 0.65rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  font-size: 0.68rem;
+  margin: 0.15rem;
+}
+
+/* MOBILE DARE WHEEL */
+.m-wheel-wrap {
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+}
+
+#m-wheel-canvas {
+  max-width: 260px;
+  width: 100%;
+  border-radius: 50%;
+  box-shadow: 0 0 35px var(--pink-glow);
+}
+
+.m-spin-btn {
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2.2rem;
+  border-radius: 50px;
+  font-family: 'Bungee', cursive;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0 25px var(--pink-glow);
+}
+
+.m-dare-box {
+  margin-top: 1.2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.m-dare-txt { font-size: 1.05rem; font-weight: 700; color: #fff; margin-top: 0.3rem; }
+.m-dare-dsc { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; }
+
+/* CONFETTI */
+.cpiece {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999999;
+  animation: cfall linear forwards;
+}
+@keyframes cfall {
+  0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- AUDIO ELEMENT -->
+<audio id="m-audio" preload="auto" src="audio/hotel_room_service.m4a"></audio>
+
+<!-- TOP MOBILE APP BAR -->
+<header class="mobile-header">
+  <div class="mobile-logo">🏖️ PRASOON'S BASH</div>
+  <div class="mobile-header-actions">
+    <a href="https://api.whatsapp.com/send?text=Check%20out%20Prasoon's%20Epic%20Bachelor%20Bash%20in%20Thailand!%20Jan%2013-19,%202027%20🏖️" target="_blank" class="btn-share-wa">
+      <span>💬</span> Share
+    </a>
+    <a href="index.html" class="btn-icon-header" title="Desktop Version">💻</a>
+  </div>
+</header>
+
+<!-- STORY AVATARS BAR -->
+<div class="story-bar">
+  <div class="story-bubble" onclick="jumpToTab('map')">
+    <div class="story-ring">
+      <img src="images/bangkok_1.jpg" alt="Bangkok" class="story-img">
+    </div>
+    <span class="story-label">Bangkok</span>
+  </div>
+  <div class="story-bubble" onclick="jumpToTab('map')">
+    <div class="story-ring">
+      <img src="images/pattaya_2.jpg" alt="Pattaya" class="story-img">
+    </div>
+    <span class="story-label">Pattaya</span>
+  </div>
+  <div class="story-bubble" onclick="jumpToTab('map')">
+    <div class="story-ring">
+      <img src="images/phuket_1.jpg" alt="Phuket" class="story-img">
+    </div>
+    <span class="story-label">Phuket</span>
+  </div>
+  <div class="story-bubble" onclick="togglePlay()">
+    <div class="story-ring" style="background:linear-gradient(135deg,var(--pink),var(--cyan))">
+      <div style="width:100%;height:100%;border-radius:50%;background:#18162e;display:flex;align-items:center;justify-content:center;font-size:1.4rem">🎵</div>
+    </div>
+    <span class="story-label">Pitbull</span>
+  </div>
+  <div class="story-bubble" onclick="jumpToTab('game')">
+    <div class="story-ring" style="background:linear-gradient(135deg,var(--gold),var(--pink))">
+      <div style="width:100%;height:100%;border-radius:50%;background:#18162e;display:flex;align-items:center;justify-content:center;font-size:1.4rem">🎰</div>
+    </div>
+    <span class="story-label">Dares</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="m-hero">
+  <span class="m-badge">OFFICIAL BACHELOR TOUR 2027</span>
+  <h1 class="m-title">PRASOON'S<br>BASH</h1>
+  <p class="m-sub">One last ride before the ring. 7 Days · 3 Cities · Zero Regrets. 🤙</p>
+  <div class="m-dates">📅 13 – 19 JAN 2027 · BLR ➔ BKK ➔ PATTAYA ➔ PHUKET ➔ BLR</div>
+</div>
+
+<!-- STATS CHIPS -->
+<div class="m-stats-row">
+  <div class="m-stat-box">
+    <div class="m-stat-num" style="color:var(--pink)">7</div>
+    <div class="m-stat-lbl">Days</div>
+  </div>
+  <div class="m-stat-box">
+    <div class="m-stat-num" style="color:var(--cyan)">3</div>
+    <div class="m-stat-lbl">Cities</div>
+  </div>
+  <div class="m-stat-box">
+    <div class="m-stat-num" style="color:var(--gold)">3</div>
+    <div class="m-stat-lbl">Flights</div>
+  </div>
+</div>
+
+<!-- SECTION: ANIMATED MAP SIMULATOR -->
+<section class="m-section" id="sec-map">
+  <span class="m-stag">// LIVE FLIGHT SIMULATOR</span>
+  <h2 class="m-stitle">THE <span style="color:var(--pink)">MAP</span></h2>
+  
+  <div class="m-map-card">
+    <!-- Simulator Steps -->
+    <div class="m-sim-controls">
+      <button class="m-sim-play" id="m-btn-play" onclick="toggleSimTour()">
+        <span id="m-sim-icon">▶</span> <span id="m-sim-text">Play Tour</span>
+      </button>
+      <button class="m-step-pill active" id="m-step-0" onclick="selectSimStage(0)">1. BLR➔BKK</button>
+      <button class="m-step-pill" id="m-step-1" onclick="selectSimStage(1)">2. Road Trip</button>
+      <button class="m-step-pill" id="m-step-2" onclick="selectSimStage(2)">3. ➔Phuket</button>
+      <button class="m-step-pill" id="m-step-3" onclick="selectSimStage(3)">4. ➔BLR</button>
+    </div>
+
+    <!-- Map Viewport -->
+    <div class="m-map-viewport">
+      <div id="m-map"></div>
+
+      <!-- In-Flight HUD -->
+      <div class="m-hud">
+        <div class="m-hud-title" id="m-hud-title">LEG 01: BLR ➔ BKK</div>
+        <div class="m-hud-stat" id="m-hud-vehicle">IndiGo 6E-1213</div>
+        <div class="m-hud-stat" id="m-hud-stats" style="color:var(--text-dim);font-size:0.6rem">840 km/h · 36,000 ft</div>
+        <div class="m-hud-prog">
+          <div class="m-hud-bar" id="m-hud-bar"></div>
+        </div>
+      </div>
+
+      <!-- Arrival Toast -->
+      <div class="m-toast" id="m-toast"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: SWIPEABLE FLIGHT TICKETS -->
+<section class="m-section" id="sec-flights">
+  <span class="m-stag">// DIGITAL WALLET PASSES</span>
+  <h2 class="m-stitle">THE <span style="color:var(--cyan)">TICKETS</span></h2>
+  <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:0.5rem">👈 Swipe horizontally to view all legs</div>
+
+  <div class="m-cards-scroll">
+    
+    <!-- PASS 1: BLR -> BKK -->
+    <div class="m-tcard">
+      <div class="m-tcard-head">
+        <div class="m-tcard-airline">🔵 IndiGo 6E-1213</div>
+        <span class="m-tcard-leg">LEG 01</span>
+      </div>
+      <div class="m-tcard-route">
+        <div class="m-city">
+          <div class="m-code">BLR</div>
+          <div class="m-time">02:00</div>
+          <div class="m-date">IST · 13 Jan</div>
+        </div>
+        <div class="m-mid">
+          <span style="font-size:1.4rem">✈️</span>
+          <div class="m-rline"></div>
+          <div style="font-size:0.65rem;color:var(--text-dim)">3h 50m</div>
+        </div>
+        <div class="m-city">
+          <div class="m-code">BKK</div>
+          <div class="m-time">07:20</div>
+          <div class="m-date">ICT · 13 Jan</div>
+        </div>
+      </div>
+      <div class="m-tcard-foot">
+        <span style="color:var(--green)">✓ Confirmed · PNR: JB2H8Z</span>
+        <span>Kempegowda T2</span>
+      </div>
+    </div>
+
+    <!-- PASS 2: BKK -> PTY ROAD TRIP -->
+    <div class="m-tcard">
+      <div class="m-tcard-head">
+        <div class="m-tcard-airline" style="color:var(--gold)">🚗 Highway 7 Road Trip</div>
+        <span class="m-tcard-leg" style="color:var(--gold);border-color:var(--gold)">LEG 02</span>
+      </div>
+      <div class="m-tcard-route">
+        <div class="m-city">
+          <div class="m-code" style="color:var(--gold)">BKK</div>
+          <div class="m-time" style="color:var(--gold)">11:00</div>
+          <div class="m-date">ICT · 14 Jan</div>
+        </div>
+        <div class="m-mid">
+          <span style="font-size:1.4rem">🚗</span>
+          <div class="m-rline" style="background:var(--gold)"></div>
+          <div style="font-size:0.65rem;color:var(--gold)">~150 km · 2h</div>
+        </div>
+        <div class="m-city">
+          <div class="m-code" style="color:var(--gold)">PTY</div>
+          <div class="m-time" style="color:var(--gold)">13:00</div>
+          <div class="m-date">ICT · 14 Jan</div>
+        </div>
+      </div>
+      <div class="m-tcard-foot">
+        <span style="color:var(--gold)">🛣️ Scenic Coastal Motorway</span>
+        <span>Pitbull AUX Mode</span>
+      </div>
+    </div>
+
+    <!-- PASS 3: DMK -> HKT -->
+    <div class="m-tcard">
+      <div class="m-tcard-head">
+        <div class="m-tcard-airline">🟠 Thai AirAsia FD3017</div>
+        <span class="m-tcard-leg">LEG 03</span>
+      </div>
+      <div class="m-tcard-route">
+        <div class="m-city">
+          <div class="m-code">DMK</div>
+          <div class="m-time">15:15</div>
+          <div class="m-date">ICT · 16 Jan</div>
+        </div>
+        <div class="m-mid">
+          <span style="font-size:1.4rem">✈️</span>
+          <div class="m-rline"></div>
+          <div style="font-size:0.65rem;color:var(--text-dim)">1h 35m</div>
+        </div>
+        <div class="m-city">
+          <div class="m-code">HKT</div>
+          <div class="m-time">16:50</div>
+          <div class="m-date">ICT · 16 Jan</div>
+        </div>
+      </div>
+      <div class="m-tcard-foot">
+        <span style="color:var(--green)">✓ Confirmed</span>
+        <span>Don Mueang T2</span>
+      </div>
+    </div>
+
+    <!-- PASS 4: HKT -> BLR -->
+    <div class="m-tcard">
+      <div class="m-tcard-head">
+        <div class="m-tcard-airline">🟡 Akasa Air QP-624</div>
+        <span class="m-tcard-leg">LEG 04</span>
+      </div>
+      <div class="m-tcard-route">
+        <div class="m-city">
+          <div class="m-code">HKT</div>
+          <div class="m-time">17:00</div>
+          <div class="m-date">ICT · 19 Jan</div>
+        </div>
+        <div class="m-mid">
+          <span style="font-size:1.4rem">✈️</span>
+          <div class="m-rline"></div>
+          <div style="font-size:0.65rem;color:var(--text-dim)">3h 40m</div>
+        </div>
+        <div class="m-city">
+          <div class="m-code">BLR</div>
+          <div class="m-time">19:10</div>
+          <div class="m-date">IST · 19 Jan</div>
+        </div>
+      </div>
+      <div class="m-tcard-foot">
+        <span style="color:var(--green)">✓ Confirmed · PNR: HDCGNX</span>
+        <span>Phuket Airport</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION: DAY-BY-DAY ITINERARY -->
+<section class="m-section" id="sec-itinerary">
+  <span class="m-stag">// DAILY BATTLE PLAN</span>
+  <h2 class="m-stitle">THE <span style="color:var(--gold)">DAYS</span></h2>
+
+  <!-- DAY 1 -->
+  <div class="m-tl-card">
+    <div class="m-tl-head" onclick="toggleTl(this)">
+      <div>
+        <div class="m-tl-day">WED 13 JAN · BANGKOK (1 NIGHT)</div>
+        <div class="m-tl-title">🛫 Red-Eye Flight & Old Town Chaos</div>
+      </div>
+      <div style="font-size:1.4rem">🏯</div>
+    </div>
+    <div class="m-tl-body open">
+      <img src="images/bangkok_1.jpg" alt="Wat Arun" class="m-tl-img">
+      <p class="m-tl-desc">Land in Bangkok at 07:20 ICT. Visit the Grand Palace, sunset cocktails at Wat Arun, Thip Samai Pad Thai, and Khao San Road party opening night!</p>
+      <div>
+        <span class="m-chip">02:00 BLR Dep</span>
+        <span class="m-chip">07:20 BKK Land</span>
+        <span class="m-chip">Roots Coffee</span>
+        <span class="m-chip">Grand Palace</span>
+        <span class="m-chip">Wat Arun Sunset</span>
+        <span class="m-chip">Khao San Road</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="m-tl-card">
+    <div class="m-tl-head" onclick="toggleTl(this)">
+      <div>
+        <div class="m-tl-day">THU 14 JAN · PATTAYA (3 NIGHTS)</div>
+        <div class="m-tl-title">🚗 Highway 7 Road Trip & Walking Street</div>
+      </div>
+      <div style="font-size:1.4rem">🏖️</div>
+    </div>
+    <div class="m-tl-body">
+      <img src="images/pattaya_2.jpg" alt="Pattaya Beach" class="m-tl-img">
+      <p class="m-tl-desc">Drive 150 km down Highway 7 to Pattaya. Resort check-in, beach vibes, fresh seafood dinner, and dive into Walking Street!</p>
+      <div>
+        <span class="m-chip">Factory Coffee</span>
+        <span class="m-chip">150km Road Trip</span>
+        <span class="m-chip">Pattaya Check-in</span>
+        <span class="m-chip">Walking Street Night 1</span>
+        <span class="m-chip">Lucifer Disco</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="m-tl-card">
+    <div class="m-tl-head" onclick="toggleTl(this)">
+      <div>
+        <div class="m-tl-day">FRI 15 JAN · PATTAYA DAY 2</div>
+        <div class="m-tl-title">🏝️ Coral Island Safari & Sanctuary of Truth</div>
+      </div>
+      <div style="font-size:1.4rem">🌊</div>
+    </div>
+    <div class="m-tl-body">
+      <img src="images/pattaya_1.jpg" alt="Sanctuary of Truth" class="m-tl-img">
+      <p class="m-tl-desc">Speedboats to Koh Larn for parasailing and snorkeling. Hand-carved Sanctuary of Truth tour, Thai massages, and live rock at Mojo Bar.</p>
+      <div>
+        <span class="m-chip">Speedboat Koh Larn</span>
+        <span class="m-chip">Parasailing</span>
+        <span class="m-chip">Sanctuary of Truth</span>
+        <span class="m-chip">Thai Massage</span>
+        <span class="m-chip">Mojo Bar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="m-tl-card">
+    <div class="m-tl-head" onclick="toggleTl(this)">
+      <div>
+        <div class="m-tl-day">SAT 16 JAN · PHUKET (2 NIGHTS)</div>
+        <div class="m-tl-title">✈️ Fly to Phuket & Bangla Road Night</div>
+      </div>
+      <div style="font-size:1.4rem">🌴</div>
+    </div>
+    <div class="m-tl-body">
+      <img src="images/phuket_2.jpg" alt="Patong Beach" class="m-tl-img">
+      <p class="m-tl-desc">Board AirAsia FD3017 at Don Mueang. Land in Phuket at 16:50 ICT. Patong resort check-in, sunset beers, and sensory overload on Bangla Road!</p>
+      <div>
+        <span class="m-chip">15:15 DMK Takeoff</span>
+        <span class="m-chip">16:50 Phuket Land</span>
+        <span class="m-chip">Patong Beach</span>
+        <span class="m-chip">Bangla Road</span>
+        <span class="m-chip">Illuzion Club</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="m-tl-card">
+    <div class="m-tl-head" onclick="toggleTl(this)">
+      <div>
+        <div class="m-tl-day">SUN 17 JAN · PHUKET DAY 2</div>
+        <div class="m-tl-title">🛥️ Phi Phi Islands Cruise & Maya Bay</div>
+      </div>
+      <div style="font-size:1.4rem">🏝️</div>
+    </div>
+    <div class="m-tl-body">
+      <img src="images/phuket_1.jpg" alt="Phi Phi Island" class="m-tl-img">
+      <p class="m-tl-desc">Catamaran cruise to Phi Phi Islands! Swim in Maya Bay, snorkel crystal reefs, visit the Big Buddha, and party at Tiger Club.</p>
+      <div>
+        <span class="m-chip">Phi Phi Cruise</span>
+        <span class="m-chip">Maya Bay Swim</span>
+        <span class="m-chip">Big Buddha</span>
+        <span class="m-chip">Yellow Door Cafe</span>
+        <span class="m-chip">Tiger Club</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 6 -->
+  <div class="m-tl-card">
+    <div class="m-tl-head" onclick="toggleTl(this)">
+      <div>
+        <div class="m-tl-day">MON 18 JAN · PHUKET DAY 3</div>
+        <div class="m-tl-title">🍾 The Grand Bachelor Finale Night</div>
+      </div>
+      <div style="font-size:1.4rem">👑</div>
+    </div>
+    <div class="m-tl-body">
+      <img src="images/phuket_3.jpg" alt="Phuket Sunset" class="m-tl-img">
+      <p class="m-tl-desc">The ultimate hurrah! Specialty coffee at Shelter, luxury spa, Royal Bachelor Dinner, and partying until the final Thailand sunrise together.</p>
+      <div>
+        <span class="m-chip">Shelter Coffee</span>
+        <span class="m-chip">Royal Spa</span>
+        <span class="m-chip">Bachelor Toast</span>
+        <span class="m-chip">Bangla Finale</span>
+        <span class="m-chip">Watch Sunrise</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="m-tl-card">
+    <div class="m-tl-head" onclick="toggleTl(this)">
+      <div>
+        <div class="m-tl-day">TUE 19 JAN · RETURN TO BLR</div>
+        <div class="m-tl-title">🛬 Akasa QP-624 Flight Home 💍</div>
+      </div>
+      <div style="font-size:1.4rem">💍</div>
+    </div>
+    <div class="m-tl-body">
+      <p class="m-tl-desc">Final mango sticky rice, 17:00 ICT Akasa QP-624 flight from Phuket, and touchdown at Kempegowda Bengaluru T2 at 19:10 IST. Groom delivered!</p>
+      <div>
+        <span class="m-chip">17:00 HKT Dep</span>
+        <span class="m-chip">19:10 BLR Land</span>
+        <span class="m-chip">Mission Complete</span>
+        <span class="m-chip">Next: The Mandap! 💍</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: MOBILE DARE WHEEL -->
+<section class="m-section" id="sec-game">
+  <span class="m-stag">// TIME TO PLAY</span>
+  <h2 class="m-stitle">DARE <span style="color:var(--pink)">WHEEL</span> 🎰</h2>
+
+  <div class="m-wheel-wrap">
+    <div style="position:relative;display:inline-block">
+      <canvas id="m-wheel-canvas" width="260" height="260"></canvas>
+      <div style="position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:1.4rem">👈</div>
+    </div>
+    <br>
+    <button class="m-spin-btn" id="m-spin-btn" onclick="spinWheel()">SPIN IT!</button>
+
+    <div class="m-dare-box">
+      <span id="m-dare-em" style="font-size:2.2rem">🎲</span>
+      <div class="m-dare-txt" id="m-dare-txt">Tap Spin to claim your dare!</div>
+      <div class="m-dare-dsc" id="m-dare-dsc">No chickening out — this is a bachelor trip!</div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOATING BOTTOM AUDIO PLAYER PILL -->
+<div class="m-audio-dock">
+  <div class="m-audio-left" onclick="togglePlay()">
+    <div class="m-audio-disc" id="m-disc">🌴</div>
+    <div class="m-audio-info">
+      <div class="m-audio-title" id="m-song-title">Hotel Room Service</div>
+      <div class="m-audio-sub" id="m-song-sub">Pitbull · Official Anthem</div>
+    </div>
+  </div>
+  <button class="m-audio-btn" id="m-play-btn" onclick="togglePlay()">▶</button>
+</div>
+
+<!-- BOTTOM APP BAR DOCK -->
+<nav class="m-app-dock">
+  <a class="dock-item active" onclick="jumpToTab('map', this)">
+    <span class="dock-icon">🗺️</span>
+    <span>Map</span>
+  </a>
+  <a class="dock-item" onclick="jumpToTab('flights', this)">
+    <span class="dock-icon">✈️</span>
+    <span>Passes</span>
+  </a>
+  <a class="dock-item" onclick="jumpToTab('itinerary', this)">
+    <span class="dock-icon">📅</span>
+    <span>Days</span>
+  </a>
+  <a class="dock-item" onclick="jumpToTab('game', this)">
+    <span class="dock-icon">🎰</span>
+    <span>Dares</span>
+  </a>
+  <a class="dock-item" onclick="togglePlay()">
+    <span class="dock-icon">🎵</span>
+    <span>Music</span>
+  </a>
+</nav>
+
+<!-- LEAFLET JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ===== AUDIO PLAYBACK =====
+const audio = document.getElementById('m-audio');
+const disc = document.getElementById('m-disc');
+const playBtn = document.getElementById('m-play-btn');
+let isPlaying = false;
+
+function togglePlay(){
+  if(audio.paused){
+    audio.play().then(() => {
+      isPlaying = true;
+      disc.classList.add('spinning');
+      playBtn.textContent = '⏸';
+      confetti();
+    }).catch(e => console.log('Autoplay blocked:', e));
+  } else {
+    audio.pause();
+    isPlaying = false;
+    disc.classList.remove('spinning');
+    playBtn.textContent = '▶';
+  }
+}
+
+// First touch on screen starts audio
+window.addEventListener('click', () => {
+  if(!isPlaying){
+    audio.play().then(() => {
+      isPlaying = true;
+      disc.classList.add('spinning');
+      playBtn.textContent = '⏸';
+    }).catch(() => {});
+  }
+}, { once: true });
+
+// ===== DOCK NAVIGATION =====
+function jumpToTab(tabId, el){
+  if(el){
+    document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+    el.classList.add('active');
+  }
+  const target = document.getElementById('sec-' + tabId);
+  if(target){
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function toggleTl(card){
+  const body = card.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// ===== CONFETTI =====
+function confetti(){
+  const cols = ['#ff2a7a', '#00f0ff', '#ffbe0b', '#8338ec', '#06d6a0'];
+  for(let i = 0; i < 40; i++){
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'cpiece';
+      const size = Math.random() * 8 + 4;
+      el.style.cssText = `
+        left: ${Math.random() * 100}vw; top: -10px;
+        background: ${cols[Math.floor(Math.random() * cols.length)]};
+        width: ${size}px; height: ${size}px;
+        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        animation-duration: ${Math.random() * 2 + 1.8}s;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 25);
+  }
+}
+
+// ===== MOBILE MAP SIMULATOR =====
+const coords = {
+  blr: [12.9716, 77.5946],
+  bkk: [13.7563, 100.5018],
+  dmk: [13.9126, 100.6067],
+  pty: [12.9236, 100.8825],
+  hkt: [7.9519, 98.3381]
+};
+
+const map = L.map('m-map', {
+  center: [13.0, 78.5],
+  zoom: 5,
+  minZoom: 3,
+  maxZoom: 12,
+  scrollWheelZoom: false,
+  zoomControl: false
+});
+
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 16
+}).addTo(map);
+
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 16
+}).addTo(map);
+
+setTimeout(() => map.invalidateSize(), 300);
+
+function makeIcon(emoji, size = 18){
+  return L.divIcon({
+    html: `<div style="font-size:${size}px;filter:drop-shadow(0 0 6px rgba(255,42,122,0.9))">${emoji}</div>`,
+    iconAnchor: [size/2, size/2],
+    className: ''
+  });
+}
+
+[
+  { ll: coords.blr, emoji: '🏙️' },
+  { ll: coords.bkk, emoji: '🏯' },
+  { ll: coords.pty, emoji: '🏖️' },
+  { ll: coords.hkt, emoji: '🌴' },
+].forEach(d => {
+  L.marker(d.ll, { icon: makeIcon(d.emoji, 18) }).addTo(map);
+});
+
+function makeArc(p1, p2, lift = 6, steps = 50){
+  const pts = [];
+  for(let i = 0; i <= steps; i++){
+    const t = i / steps;
+    const lat = p1[0] + (p2[0] - p1[0]) * t + Math.sin(t * Math.PI) * lift;
+    const lng = p1[1] + (p2[1] - p1[1]) * t;
+    pts.push([lat, lng]);
+  }
+  return pts;
+}
+
+function makeRoad(){
+  const wp = [
+    [13.7563, 100.5018], [13.6200, 100.9500], [13.3611, 100.9847],
+    [13.1737, 100.9311], [12.9236, 100.8825]
+  ];
+  const pts = [];
+  for(let i = 0; i < wp.length - 1; i++){
+    for(let j = 0; j < 8; j++){
+      const f = j / 8;
+      pts.push([wp[i][0] + (wp[i+1][0] - wp[i][0]) * f, wp[i][1] + (wp[i+1][1] - wp[i][1]) * f]);
+    }
+  }
+  pts.push(wp[wp.length - 1]);
+  return pts;
+}
+
+const simStages = [
+  {
+    title: 'LEG 01: BLR ➔ BKK',
+    vehicle: 'IndiGo 6E-1213',
+    stats: '840 km/h · 36,000 ft',
+    emoji: '✈️',
+    color: '#ff2a7a',
+    points: makeArc(coords.blr, coords.bkk, 7.5, 60),
+    cameraStart: { center: [13.0, 78.5], zoom: 5 },
+    cameraEnd: { center: [13.75, 100.5], zoom: 7.5 },
+    toast: '🛬 Landed in Bangkok! 07:20 ICT Wed 13 Jan · 1 Night Stay'
+  },
+  {
+    title: 'LEG 02: BKK ➔ PATTAYA',
+    vehicle: 'Highway 7 Cruiser',
+    stats: '110 km/h · 40 ft',
+    emoji: '🚗',
+    color: '#ffbe0b',
+    points: makeRoad(),
+    cameraStart: { center: [13.75, 100.5], zoom: 8 },
+    cameraEnd: { center: [12.92, 100.88], zoom: 8.5 },
+    toast: '🏖️ Arrived in Pattaya! Jan 14–16 · 3 Nights Stay'
+  },
+  {
+    title: 'LEG 03: DMK ➔ PHUKET',
+    vehicle: 'AirAsia FD3017',
+    stats: '780 km/h · 32,000 ft',
+    emoji: '✈️',
+    color: '#00f0ff',
+    points: makeArc(coords.dmk, coords.hkt, 3.5, 45),
+    cameraStart: { center: [13.9, 100.6], zoom: 6.5 },
+    cameraEnd: { center: [7.95, 98.33], zoom: 8 },
+    toast: '🌴 Landed in Phuket! Jan 16–19 · 2 Nights Stay'
+  },
+  {
+    title: 'LEG 04: PHUKET ➔ BLR',
+    vehicle: 'Akasa QP-624',
+    stats: '820 km/h · 38,000 ft',
+    emoji: '✈️',
+    color: '#8338ec',
+    points: makeArc(coords.hkt, coords.blr, 6.5, 60),
+    cameraStart: { center: [7.95, 98.33], zoom: 6 },
+    cameraEnd: { center: [12.97, 77.59], zoom: 6.5 },
+    toast: '💍 Groom Safely Delivered to Bangalore for the Wedding!'
+  }
+];
+
+let stageIdx = 0;
+let ptIdx = 0;
+let isTourRunning = false;
+let tourInterval = null;
+let trailLine = null;
+
+const vehEl = document.createElement('div');
+vehEl.style.fontSize = '24px';
+vehEl.style.filter = 'drop-shadow(0 0 8px rgba(255,42,122,0.9))';
+vehEl.innerHTML = '✈️';
+const vehMarker = L.marker(simStages[0].points[0], { icon: L.divIcon({ html: vehEl, iconAnchor: [12, 12], className: '' }) }).addTo(map);
+
+function setupSim(idx){
+  stageIdx = idx;
+  ptIdx = 0;
+  const st = simStages[stageIdx];
+
+  for(let i = 0; i < 4; i++){
+    const btn = document.getElementById('m-step-' + i);
+    if(btn) btn.classList.toggle('active', i === stageIdx);
+  }
+
+  vehEl.innerHTML = st.emoji;
+  if(trailLine) trailLine.remove();
+  trailLine = L.polyline([], { color: st.color, weight: 3.5, opacity: 0.95 }).addTo(map);
+
+  vehMarker.setLatLng(st.points[0]);
+  map.flyTo(st.cameraStart.center, st.cameraStart.zoom, { duration: 0.8 });
+
+  document.getElementById('m-hud-title').textContent = st.title;
+  document.getElementById('m-hud-vehicle').textContent = st.vehicle;
+  document.getElementById('m-hud-stats').textContent = st.stats;
+  document.getElementById('m-hud-bar').style.width = '0%';
+}
+
+function simTick(){
+  if(!isTourRunning) return;
+  const st = simStages[stageIdx];
+  const pts = st.points;
+
+  if(ptIdx < pts.length){
+    const pt = pts[ptIdx];
+    vehMarker.setLatLng(pt);
+    trailLine.addLatLng(pt);
+    const pct = Math.round((ptIdx / (pts.length - 1)) * 100);
+    document.getElementById('m-hud-bar').style.width = pct + '%';
+    ptIdx++;
+  } else {
+    isTourRunning = false;
+    clearInterval(tourInterval);
+    map.flyTo(st.cameraEnd.center, st.cameraEnd.zoom, { duration: 0.6 });
+
+    const toast = document.getElementById('m-toast');
+    toast.textContent = st.toast;
+    toast.classList.add('show');
+    confetti();
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      const next = (stageIdx + 1) % simStages.length;
+      setupSim(next);
+      startTour();
+    }, 2800);
+  }
+}
+
+function startTour(){
+  isTourRunning = true;
+  document.getElementById('m-sim-icon').textContent = '⏸';
+  document.getElementById('m-sim-text').textContent = 'Pause';
+  if(tourInterval) clearInterval(tourInterval);
+  tourInterval = setInterval(simTick, 50);
+}
+
+function pauseTour(){
+  isTourRunning = false;
+  document.getElementById('m-sim-icon').textContent = '▶';
+  document.getElementById('m-sim-text').textContent = 'Play';
+  if(tourInterval){
+    clearInterval(tourInterval);
+    tourInterval = null;
+  }
+}
+
+function toggleSimTour(){
+  if(isTourRunning) pauseTour();
+  else startTour();
+}
+
+function selectSimStage(idx){
+  pauseTour();
+  setupSim(idx);
+  startTour();
+}
+
+setupSim(0);
+setTimeout(() => startTour(), 1200);
+
+// ===== DARE WHEEL =====
+const dares = [
+  { t: 'Take a shot with a stranger!', e: '🥃', d: 'Walk up to anyone, cheers, and drink.' },
+  { t: 'Jump in the pool clothed!', e: '💦', d: 'Full clothes, film it!' },
+  { t: 'Eat spiciest Thai dish!', e: '🌶️', d: 'Level 5 spice Tom Yum.' },
+  { t: '90-min Thai Massage!', e: '💆', d: 'Book one within 2 hours.' },
+  { t: 'Buy everyone shots!', e: '🍺', d: 'Big spender energy.' },
+  { t: 'Karaoke solo!', e: '🎤', d: 'Pick the most theatrical song.' },
+  { t: 'Bargain 50% off!', e: '🛍️', d: 'Negotiate with street vendor.' },
+  { t: 'Midnight ocean swim!', e: '🌊', d: 'Moonlight beach swim.' },
+];
+
+const wc = document.getElementById('m-wheel-canvas');
+const wx = wc.getContext('2d');
+const cols = ['#ff2a7a', '#8338ec', '#00f0ff', '#ffbe0b', '#06d6a0', '#ff6b35', '#3a86ff', '#ff2a7a'];
+let wAngle = 0;
+let wSpinning = false;
+
+function drawWheel(a){
+  const cx = wc.width / 2, cy = wc.height / 2, r = cx - 8;
+  const slice = Math.PI * 2 / dares.length;
+  wx.clearRect(0, 0, wc.width, wc.height);
+
+  dares.forEach((d, i) => {
+    const s = a + slice * i;
+    wx.beginPath(); wx.moveTo(cx, cy); wx.arc(cx, cy, r, s, s + slice); wx.closePath();
+    wx.fillStyle = cols[i]; wx.fill();
+    wx.strokeStyle = '#050515'; wx.lineWidth = 2; wx.stroke();
+
+    wx.save(); wx.translate(cx, cy); wx.rotate(s + slice / 2);
+    wx.textAlign = 'right'; wx.font = '18px serif';
+    wx.fillText(d.e, r - 10, 6);
+    wx.restore();
+  });
+
+  wx.beginPath(); wx.arc(cx, cy, 24, 0, Math.PI * 2);
+  wx.fillStyle = '#050515'; wx.fill();
+  wx.strokeStyle = '#ff2a7a'; wx.lineWidth = 2.5; wx.stroke();
+  wx.fillStyle = '#fff'; wx.font = 'bold 10px Poppins';
+  wx.textAlign = 'center'; wx.textBaseline = 'middle';
+  wx.fillText('SPIN', cx, cy);
+}
+drawWheel(0);
+
+function spinWheel(){
+  if(wSpinning) return;
+  wSpinning = true;
+  document.getElementById('m-spin-btn').disabled = true;
+
+  const total = Math.PI * 2 * (5 + Math.random() * 5);
+  const start = performance.now();
+  const startA = wAngle;
+
+  function frame(now){
+    const t = Math.min((now - start) / 4000, 1);
+    const ease = 1 - Math.pow(1 - t, 4);
+    wAngle = startA + total * ease;
+    drawWheel(wAngle);
+
+    if(t < 1){
+      requestAnimationFrame(frame);
+    } else {
+      wSpinning = false;
+      document.getElementById('m-spin-btn').disabled = false;
+      const slice = Math.PI * 2 / dares.length;
+      const norm = ((-wAngle) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+      const chosen = dares[Math.floor(norm / slice) % dares.length];
+
+      document.getElementById('m-dare-em').textContent = chosen.e;
+      document.getElementById('m-dare-txt').textContent = chosen.t;
+      document.getElementById('m-dare-dsc').textContent = chosen.d;
+      confetti();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+</script>
+</body>
+</html>

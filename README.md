@@ -18,35 +18,37 @@ A shareable, aesthetic, cyberpunk-tropical travel website built for Prasoon's ba
 
 ---
 
-## 🌴 The Itinerary
+## 🎬 Live Cinematic Journey Simulator (Animated Map)
 
-- **Jan 13–14**: **Bangkok (1 Night Stay)** — Suvarnabhumi arrival, Grand Palace, Wat Arun riverside sunset, Thip Samai Pad Thai, and Khao San Road party opening night.
-- **Jan 14–16**: **Pattaya (3 Nights Stay)** — Highway 7 Road trip cruise, Coral Island (Koh Larn) speedboats, Sanctuary of Truth all-wood temple, Thai massage recovery, and Walking Street nightlife.
-- **Jan 16–19**: **Phuket (2 Nights Stay)** — Flight to Phuket, Patong Beach, Phi Phi Islands & Maya Bay catamaran cruise, Big Buddha viewpoint, and the Grand Bachelor Finale on Bangla Road.
-- **Jan 19**: **Return to Bengaluru** — Akasa Air flight home, deliver the groom safe and sound for the wedding!
+The map now features a full **Cinematic Stage-By-Stage Journey Simulator**:
+- **One Country / Region at a Time**:
+  - **Stage 1 (BLR ➔ BKK)**: Focuses on India (Bengaluru), takes off, draws neon pink flight trail across the Bay of Bengal, and zooms into Bangkok for touchdown!
+  - **Stage 2 (BKK ➔ Pattaya Road Trip)**: Only Thailand in view! Vehicle switches to an animated car 🚗, driving along Highway 7 to Pattaya Beach with dynamic gold road trails!
+  - **Stage 3 (BKK/DMK ➔ Phuket Flight)**: Switches to AirAsia flight ✈️, flying south along the Thai coast and zooming into tropical Phuket island!
+  - **Stage 4 (Phuket ➔ BLR Return)**: Akasa Air flight takes off, flying across the Indian Ocean back to Kempegowda Bengaluru T2, delivering the groom safe and sound for the wedding! 💍
+- **Features**:
+  - `[ ▶ Play / ⏸ Pause ]` Tour controller
+  - Quick step jump selector: `[ 1. BLR ➔ BKK ]`, `[ 2. BKK ➔ Pattaya ]`, `[ 3. BKK ➔ Phuket ]`, `[ 4. Phuket ➔ BLR ]`
+  - Speed toggle: `[ 1x ]` / `[ 2x ]` / `[ 4x ]`
+  - Real-time in-flight telemetry HUD (Speed, Altitude, Time, Vehicle name, Progress bar)
+  - Vehicle rotation (plane and car rotate to face the exact direction of motion)
+  - Arrival celebrations with toasts and confetti!
 
 ---
 
-## 🌟 Upgraded Features
+## 🎧 "Hotel Room Service" Retro Boombox & Playlist
 
-- 🗺️ **Dual-Mode Interactive Map**:
-  - **Dark Satellite Map**: Built with Leaflet + CartoDB Dark Matter tiles (100% immune to OSM 403 blocks), featuring animated flight route arcs, road trip trail, and an animated plane marker!
-  - **Cyberpunk Radar Mode**: Custom animated Canvas radar screen with sweeping beam, telemetry coordinates, and glowing trajectory arcs.
-- 🎧 **"Hotel Room Service" Retro Boombox & Playlist**:
-  - Interactive retro cassette player with spinning tape reels, LCD screen, and equalizer visualizer bars.
-  - Powered by Web Audio API — click Play to hear a funky retro synth beat right in the browser!
-  - 8 curated party tracks (Pitbull, David Guetta, Akon, LMFAO, Sean Paul, Calvin Harris, Flo Rida, Chainsmokers).
-  - Quick launch buttons for Spotify, YouTube, and clipboard sharing.
-- 📊 **Funny Infographics & Groom Vital Dashboard**:
-  - Hangover probability gauge (110% CRITICAL), Pad Thai ingestion rate, and Groom Protection Protocol.
-  - The 5 Bachelor Trip Commandments & Bachelor Survival Pyramid.
-- 📸 **Real High-Resolution City Photos**:
-  - Authentic photos for Bangkok (Wat Arun, Grand Palace, Skyline), Pattaya (Sanctuary of Truth, Beach, Coral Island), and Phuket (Phi Phi Maya Bay, Patong, Karon Sunset) stored locally in `images/`.
-  - Built-in click-to-enlarge Lightbox modal.
-- 🎰 **Bachelor Dare Wheel**:
-  - Interactive Canvas spin wheel with 12 hilarious bachelor dares, easing animation, and confetti bursts!
-- 🎱 **Bachelor Bingo**:
-  - 5×5 interactive challenge card with line detection, free space, and winner celebrations.
+- **Interactive Retro Cassette Player**: Spinning dual reels, neon LCD track display, and equalizer frequency bars.
+- **8 Official Studio Tracks (Bundled Locally)**:
+  1. 🌴 **Pitbull – Hotel Room Service** (The Official Bachelor Anthem)
+  2. 🏎️ **David Guetta ft. Kid Cudi – Memories**
+  3. 🕶️ **Akon ft. Eminem – Smack That**
+  4. 💃 **LMFAO – Party Rock Anthem**
+  5. 🛺 **Sean Paul – Temperature**
+  6. 🏖️ **Calvin Harris – Summer**
+  7. 🍹 **Flo Rida ft. T-Pain – Low**
+  8. 🌅 **The Chainsmokers – Closer**
+- Real-time progress scrubbing, duration display (`0:14 / 0:30`), volume controls, and links to Spotify and YouTube.
 
 ---
 

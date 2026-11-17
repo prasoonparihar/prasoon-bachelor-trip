@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Prasoon's Epic Bachelor Bash — Thailand 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+/* ===== ROOT ===== */
+:root {
+  --bg: #06061a;
+  --card: #0d0d2b;
+  --card2: #12123a;
+  --pink: #ff2d78;
+  --cyan: #00f5d4;
+  --gold: #ffd700;
+  --purple: #9d4edd;
+  --blue: #00b4d8;
+  --green: #06d6a0;
+  --text: #e8e8ff;
+  --dim: #6677aa;
+  --border: rgba(255,45,120,0.25);
+  --r: 16px;
+  --r2: 24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;background:rgba(6,6,26,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Bungee',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:1.2rem;list-style:none}
+.nav-links a{color:var(--dim);text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:color .3s}
+.nav-links a:hover{color:var(--cyan)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ===== HERO ===== */
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-block;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;padding:.4rem 1.4rem;border-radius:50px;font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.5rem;animation:pulseglow 2s ease-in-out infinite}
+@keyframes pulseglow{0%,100%{box-shadow:0 0 20px rgba(255,45,120,.4)}50%{box-shadow:0 0 50px rgba(255,45,120,.9),0 0 80px rgba(157,78,221,.4)}}
+.hero-title{font-family:'Bungee',cursive;font-size:clamp(2.8rem,9vw,6.5rem);line-height:1.05;margin-bottom:1rem;background:linear-gradient(135deg,#fff 0%,var(--pink) 35%,var(--gold) 65%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;animation:gradshift 4s ease infinite}
+@keyframes gradshift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--dim);margin-bottom:.4rem;font-weight:300}
+.hero-date{font-family:'Space Mono',monospace;font-size:clamp(.85rem,1.8vw,1rem);color:var(--cyan);margin-bottom:2rem}
+.hero-emojis{display:flex;justify-content:center;gap:.8rem;flex-wrap:wrap;font-size:2rem;margin-bottom:2.5rem;animation:floatemoji 3s ease-in-out infinite}
+@keyframes floatemoji{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-cta{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;cursor:pointer;padding:1rem 2.5rem;border-radius:50px;font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:.04em;text-decoration:none;box-shadow:0 0 40px rgba(255,45,120,.5);transition:all .3s}
+.hero-cta:hover{transform:translateY(-4px);box-shadow:0 15px 50px rgba(255,45,120,.7)}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:var(--dim);font-size:.78rem;animation:bouncehint 2s ease-in-out infinite}
+@keyframes bouncehint{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+/* ===== STATS BAR ===== */
+.stats-bar{display:flex;flex-wrap:wrap;background:linear-gradient(135deg,#0d0d2b,#12123a);border-top:1px solid var(--border);border-bottom:1px solid rgba(0,245,212,.15)}
+.stat-item{flex:1;min-width:130px;text-align:center;padding:1.8rem 1rem;border-right:1px solid rgba(255,255,255,.04)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Bungee',cursive;font-size:2.4rem;line-height:1;margin-bottom:.3rem}
+.stat-lbl{color:var(--dim);font-size:.75rem;text-transform:uppercase;letter-spacing:.12em}
+
+/* ===== SECTIONS ===== */
+section{padding:5rem 2rem}
+.container{max-width:1200px;margin:0 auto}
+.stag{display:inline-block;color:var(--pink);font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:.6rem}
+.stitle{font-family:'Bungee',cursive;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;margin-bottom:.8rem}
+.ssub{color:var(--dim);font-size:1rem;max-width:600px}
+
+/* ===== MAP ===== */
+#map-section{background:radial-gradient(ellipse at center,#0d0d2b 0%,#06061a 70%)}
+#map{height:520px;border-radius:var(--r2);border:1px solid rgba(0,245,212,.2);box-shadow:0 0 60px rgba(0,245,212,.08);overflow:hidden;margin-top:2rem}
+.leaflet-tile-pane{filter:brightness(.55) saturate(.4) hue-rotate(190deg)}
+.map-legend{display:flex;gap:2rem;flex-wrap:wrap;margin-top:1.5rem}
+.leg-item{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--dim)}
+.leg-line{width:36px;height:0;border-top:3px dashed var(--pink)}
+.leg-road{width:36px;height:3px;background:var(--gold);border-radius:2px}
+
+/* ===== FLIGHTS ===== */
+#flights{background:var(--bg)}
+.tickets-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-top:2.5rem}
+.tcard{position:relative;background:linear-gradient(135deg,#0d0d2b,#1a0a2e);border-radius:var(--r2);border:1px solid rgba(255,255,255,.07);overflow:hidden;transition:transform .3s,box-shadow .3s}
+.tcard:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(255,45,120,.2)}
+.tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan))}
+.tcard-airline{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.5rem;border-bottom:1px dashed rgba(255,255,255,.08)}
+.aname{font-weight:700;font-size:.92rem}
+.anum{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--dim)}
+.pnr{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--gold);letter-spacing:.12em}
+.tcard-route{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.5rem}
+.rcity{text-align:center}
+.rcode{font-family:'Bungee',cursive;font-size:2.1rem;color:var(--text);line-height:1}
+.rname{font-size:.7rem;color:var(--dim);margin-top:.2rem}
+.rtime{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--pink);margin-top:.3rem}
+.rdate{font-size:.68rem;color:var(--dim)}
+.rmid{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 1rem}
+.rline{width:100%;height:2px;background:linear-gradient(90deg,var(--pink),var(--cyan));margin:.5rem 0}
+.rplane{font-size:1.6rem;animation:flyplane 3s ease-in-out infinite;display:block}
+@keyframes flyplane{0%{transform:translateX(-8px) rotate(0)}50%{transform:translateX(8px) rotate(6deg)}100%{transform:translateX(-8px) rotate(0)}}
+.rdur{font-size:.72rem;color:var(--dim)}
+.tcard-foot{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:rgba(0,0,0,.3);border-top:1px dashed rgba(255,255,255,.08)}
+.tstatus{display:inline-block;padding:.22rem .8rem;border-radius:50px;background:rgba(6,214,160,.12);color:var(--green);font-size:.72rem;font-weight:700}
+.tinfo{font-size:.7rem;color:var(--dim)}
+.road-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.35);color:var(--gold);padding:.2rem .75rem;border-radius:50px;font-size:.72rem;font-weight:700}
+
+/* ===== TIMELINE ===== */
+#timeline{background:radial-gradient(ellipse at top right,#1a0a2e,#06061a)}
+.timeline{position:relative;margin-top:3rem}
+.timeline::before{content:'';position:absolute;left:2.5rem;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--pink),var(--purple),var(--cyan))}
+.tl-item{position:relative;padding-left:6rem;margin-bottom:1.5rem}
+.tl-dot{position:absolute;left:1.75rem;width:1.5rem;height:1.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;border:2px solid var(--pink);background:var(--bg);box-shadow:0 0 15px rgba(255,45,120,.5);color:var(--pink)}
+.tl-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(255,255,255,.05);overflow:hidden;transition:all .3s;cursor:pointer}
+.tl-card:hover{border-color:rgba(255,45,120,.3);box-shadow:0 8px 30px rgba(255,45,120,.1)}
+.tl-head{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.5rem}
+.tl-day{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--dim);letter-spacing:.1em}
+.tl-title{font-weight:700;font-size:1.05rem;margin:.15rem 0}
+.tl-emoji{font-size:1.6rem}
+.tl-body{padding:0 1.5rem 1.5rem;display:none}
+.tl-body.open{display:block;animation:fadein .3s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.tl-desc{color:var(--dim);font-size:.85rem;margin-bottom:.8rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{display:inline-flex;align-items:center;gap:.25rem;padding:.28rem .75rem;border-radius:50px;font-size:.72rem;font-weight:600;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:all .2s;cursor:default}
+.chip:hover{background:rgba(255,45,120,.12);border-color:var(--pink);color:var(--pink)}
+@media(max-width:768px){.timeline::before{left:1.5rem}.tl-item{padding-left:4rem}.tl-dot{left:.75rem}}
+
+/* ===== CITY EXPLORER ===== */
+#cities{background:var(--bg)}
+.city-tabs{display:flex;gap:0;margin:2rem 0 0;border-bottom:2px solid rgba(255,255,255,.07);overflow-x:auto}
+.ctab{padding:.8rem 1.6rem;border:none;background:none;cursor:pointer;color:var(--dim);font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:600;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .3s;white-space:nowrap}
+.ctab.active{color:var(--pink);border-bottom-color:var(--pink)}
+.ctab:hover:not(.active){color:var(--text)}
+.cpanel{display:none;padding-top:1.5rem}
+.cpanel.active{display:block}
+.city-hdr{background:linear-gradient(135deg,#0d0d2b,#1a0a2e);border-radius:var(--r2);padding:2rem;margin-bottom:1.5rem;border:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:1.5rem}
+.city-emoji2{font-size:4rem}
+.city-info2 h3{font-family:'Bungee',cursive;font-size:1.8rem;margin-bottom:.4rem}
+.city-info2 p{color:var(--dim);font-size:.88rem}
+.city-stay2{display:inline-block;margin-top:.5rem;padding:.25rem .9rem;border-radius:50px;background:rgba(255,45,120,.12);color:var(--pink);font-size:.75rem;font-weight:600}
+@media(max-width:600px){.city-hdr{flex-direction:column;text-align:center}}
+.scat{margin-bottom:2rem}
+.scat h4{font-size:.75rem;text-transform:uppercase;letter-spacing:.18em;color:var(--dim);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.spots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.spot{background:var(--card2);border-radius:var(--r);padding:1.2rem;border:1px solid rgba(255,255,255,.04);transition:all .3s;display:flex;align-items:flex-start;gap:.9rem}
+.spot:hover{border-color:rgba(0,245,212,.3);transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,245,212,.08)}
+.spot-ic{font-size:2rem;flex-shrink:0}
+.spot-det h5{font-size:.9rem;margin-bottom:.2rem}
+.spot-det p{font-size:.78rem;color:var(--dim);line-height:1.5}
+.stag2{display:inline-block;margin-top:.4rem;padding:.12rem .6rem;border-radius:50px;font-size:.68rem;font-weight:700}
+
+/* ===== GAME ===== */
+#game{background:radial-gradient(ellipse at center,#12063a,#06061a);text-align:center}
+.game-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-top:3rem}
+@media(max-width:768px){.game-wrap{grid-template-columns:1fr}}
+.wheel-side{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+#wheel-canvas{border-radius:50%;box-shadow:0 0 60px rgba(255,45,120,.35),0 0 120px rgba(157,78,221,.2);max-width:340px;width:100%}
+.spin-btn{background:linear-gradient(135deg,var(--pink),var(--purple));border:none;cursor:pointer;color:#fff;padding:1rem 3rem;border-radius:50px;font-family:'Bungee',cursive;font-size:1.2rem;letter-spacing:.06em;box-shadow:0 0 35px rgba(255,45,120,.5);transition:all .3s}
+.spin-btn:hover{transform:scale(1.06);box-shadow:0 0 60px rgba(255,45,120,.8)}
+.spin-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.dare-side{background:var(--card);border-radius:var(--r2);padding:2rem;border:1px solid rgba(255,255,255,.07);text-align:left}
+.dare-side h3{font-family:'Bungee',cursive;font-size:1.4rem;color:var(--gold);margin-bottom:1.2rem}
+.dare-emoji2{font-size:3.5rem;margin-bottom:.5rem;display:block;transition:all .3s}
+.dare-txt{font-size:1.4rem;font-weight:700;min-height:3.5rem;line-height:1.3;transition:all .3s}
+.dare-dsc{color:var(--dim);font-size:.85rem;margin-top:.5rem}
+
+/* ===== BINGO ===== */
+#bingo{background:var(--bg);text-align:center}
+.bingo-wrap{max-width:560px;margin:0 auto}
+.bingo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:2rem 0}
+.bcell{aspect-ratio:1;background:var(--card2);border:1px solid rgba(255,255,255,.05);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:.4rem;transition:all .3s;font-size:.62rem;text-align:center;color:var(--dim);font-weight:600;user-select:none}
+.bcell .bem{font-size:1.4rem;margin-bottom:.15rem}
+.bcell:hover{border-color:var(--pink);color:var(--text)}
+.bcell.marked{background:linear-gradient(135deg,rgba(255,45,120,.18),rgba(157,78,221,.18));border-color:var(--pink);color:var(--pink);box-shadow:0 0 12px rgba(255,45,120,.2)}
+.bcell.free-cell{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border-color:transparent;font-size:.75rem;cursor:default}
+.bingo-status{font-family:'Bungee',cursive;font-size:1.8rem;color:var(--gold);min-height:2.5rem;animation:popin .4s ease}
+@keyframes popin{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.bingo-hint{color:var(--dim);font-size:.82rem;margin-top:.5rem}
+@media(max-width:480px){.bingo-grid{max-width:95vw}.bcell{font-size:.52rem}.bcell .bem{font-size:1.1rem}}
+
+/* ===== FOOTER ===== */
+footer{background:linear-gradient(135deg,#0d0d2b,#06061a);border-top:1px solid var(--border);padding:4rem 2rem;text-align:center}
+.foot-em{font-size:3.5rem;margin-bottom:1rem}
+.foot-t{font-family:'Bungee',cursive;font-size:clamp(1.5rem,4vw,2.5rem);background:linear-gradient(135deg,var(--pink),var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.4rem}
+.foot-s{color:var(--dim);margin-bottom:2rem;font-size:.92rem}
+.foot-tags{display:flex;justify-content:center;flex-wrap:wrap;gap:.7rem;margin-bottom:2rem}
+.ftag{padding:.4rem 1.2rem;border-radius:50px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--dim);font-size:.78rem;font-weight:600}
+.foot-credit{font-size:.75rem;color:rgba(102,119,170,.5)}
+
+/* ===== UTILS ===== */
+.pink{color:var(--pink)} .cyan{color:var(--cyan)} .gold{color:var(--gold)} .purple{color:var(--purple)} .green{color:var(--green)}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+/* confetti */
+.cpiece{position:fixed;pointer-events:none;z-index:9999;animation:cfall linear forwards}
+@keyframes cfall{0%{transform:translateY(-80px) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">🏖️ Prasoon's Bash</a>
+  <ul class="nav-links">
+    <li><a href="#map-section">Map</a></li>
+    <li><a href="#flights">Flights</a></li>
+    <li><a href="#timeline">Itinerary</a></li>
+    <li><a href="#cities">Explore</a></li>
+    <li><a href="#game">Dare Wheel</a></li>
+    <li><a href="#bingo">Bingo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge">🎊 Bachelor Trip — Thailand 2027 🎊</div>
+    <h1 class="hero-title">PRASOON'S<br>EPIC BASH</h1>
+    <p class="hero-sub">One last ride before the ring. Thailand, let's gooo! 🤙</p>
+    <p class="hero-date">📅 13 – 19 January 2027 &nbsp;·&nbsp; 🌏 Bangkok · Pattaya · Phuket</p>
+    <div class="hero-emojis">
+      <span>✈️</span><span>🏖️</span><span>🍹</span><span>🎉</span><span>🌴</span><span>🕺</span><span>☕</span><span>🛥️</span><span>🔥</span>
+    </div>
+    <a href="#map-section" class="hero-cta">Let's Go! ✈️</a>
+  </div>
+  <div class="scroll-hint">↓ scroll to explore ↓</div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar reveal">
+  <div class="stat-item">
+    <div class="stat-num pink">7</div>
+    <div class="stat-lbl">🗓️ Days of Chaos</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num cyan">3</div>
+    <div class="stat-lbl">🏙️ Cities</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num gold">3</div>
+    <div class="stat-lbl">✈️ Flights</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" style="color:var(--blue)">1</div>
+    <div class="stat-lbl">🚗 Road Trip</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num purple">6</div>
+    <div class="stat-lbl">🌙 Nights</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num green">∞</div>
+    <div class="stat-lbl">🍹 Memories</div>
+  </div>
+</div>
+
+<!-- MAP -->
+<section id="map-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="stag">// the journey</span>
+      <h2 class="stitle">THE MAP OF <span class="pink">MADNESS</span></h2>
+      <p class="ssub">From the garden city to the city of angels — and back with stories you can't tell at the wedding. 😏</p>
+    </div>
+    <div id="map" class="reveal"></div>
+    <div class="map-legend reveal">
+      <div class="leg-item"><div class="leg-line"></div> ✈️ Flight Route</div>
+      <div class="leg-item"><div class="leg-road"></div> 🚗 Road Trip (~150km)</div>
+    </div>
+  </div>
+</section>
+
+<!-- FLIGHTS -->
+<section id="flights">
+  <div class="container">
+    <div class="reveal">
+      <span class="stag">// your boarding passes</span>
+      <h2 class="stitle">THE <span class="cyan">FLIGHTS</span></h2>
+      <p class="ssub">3 flights, 1 legendary trip. All timings shown in local timezone (ICT = Bangkok / IST = India).</p>
+    </div>
+    <div class="tickets-grid">
+
+      <!-- F1: BLR→BKK -->
+      <div class="tcard reveal">
+        <div class="tcard-airline">
+          <div><div class="aname">🔵 IndiGo</div><div class="anum">6E-1213 · Airbus A321 · Economy Saver</div></div>
+          <div class="pnr">PNR: JB2H8Z</div>
+        </div>
+        <div class="tcard-route">
+          <div class="rcity">
+            <div class="rcode">BLR</div>
+            <div class="rname">Bengaluru</div>
+            <div class="rtime">02:00</div>
+            <div class="rdate">IST · Wed 13 Jan</div>
+          </div>
+          <div class="rmid">
+            <span class="rplane">✈️</span>
+            <div class="rline"></div>
+            <div class="rdur">3h 50m</div>
+          </div>
+          <div class="rcity">
+            <div class="rcode">BKK</div>
+            <div class="rname">Bangkok</div>
+            <div class="rtime">07:20</div>
+            <div class="rdate">ICT · Wed 13 Jan</div>
+          </div>
+        </div>
+        <div class="tcard-foot">
+          <div><div class="tstatus">✓ Confirmed</div><div class="tinfo" style="margin-top:.3rem">Kempegowda T2 → Suvarnabhumi</div></div>
+          <div class="tinfo" style="text-align:right"><div>7 Kg + 20 Kg baggage</div><div>Prasoon Kumar Parihar</div></div>
+        </div>
+      </div>
+
+      <!-- F2: BKK→HKT -->
+      <div class="tcard reveal" style="transition-delay:.08s">
+        <div class="tcard-airline">
+          <div><div class="aname">🟠 Thai AirAsia</div><div class="anum">FD3017 · Economy</div></div>
+          <div class="pnr">REF: RL5KR</div>
+        </div>
+        <div class="tcard-route">
+          <div class="rcity">
+            <div class="rcode">DMK</div>
+            <div class="rname">Bangkok</div>
+            <div class="rtime">15:15</div>
+            <div class="rdate">ICT · Fri 16 Jan</div>
+          </div>
+          <div class="rmid">
+            <span class="rplane">✈️</span>
+            <div class="rline" style="background:linear-gradient(90deg,#ff6b35,var(--cyan))"></div>
+            <div class="rdur">1h 35m</div>
+          </div>
+          <div class="rcity">
+            <div class="rcode">HKT</div>
+            <div class="rname">Phuket</div>
+            <div class="rtime">16:50</div>
+            <div class="rdate">ICT · Fri 16 Jan</div>
+          </div>
+        </div>
+        <div class="tcard-foot">
+          <div><div class="tstatus">✓ Confirmed</div><div class="tinfo" style="margin-top:.3rem">Don Mueang T2 → Phuket Int'l D</div></div>
+          <div class="tinfo" style="text-align:right"><div>Prasoon Kumar Parihar</div></div>
+        </div>
+      </div>
+
+      <!-- F3: HKT→BLR -->
+      <div class="tcard reveal" style="transition-delay:.16s">
+        <div class="tcard-airline">
+          <div><div class="aname">🟡 Akasa Air</div><div class="anum">QP-624 · Boeing 737 Max 8 · Economy Saver</div></div>
+          <div class="pnr">PNR: HDCGNX</div>
+        </div>
+        <div class="tcard-route">
+          <div class="rcity">
+            <div class="rcode">HKT</div>
+            <div class="rname">Phuket</div>
+            <div class="rtime">17:00</div>
+            <div class="rdate">ICT · Tue 19 Jan</div>
+          </div>
+          <div class="rmid">
+            <span class="rplane">✈️</span>
+            <div class="rline" style="background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
+            <div class="rdur">3h 40m</div>
+          </div>
+          <div class="rcity">
+            <div class="rcode">BLR</div>
+            <div class="rname">Bengaluru</div>
+            <div class="rtime">19:10</div>
+            <div class="rdate">IST · Tue 19 Jan</div>
+          </div>
+        </div>
+        <div class="tcard-foot">
+          <div><div class="tstatus">✓ Confirmed</div><div class="tinfo" style="margin-top:.3rem">Phuket Airport → Kempegowda T2</div></div>
+          <div class="tinfo" style="text-align:right"><div>7 Kg + 20 Kg baggage</div><div>Prasoon Kumar Parihar</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Road Trip Card -->
+    <div class="tcard reveal" style="max-width:520px;margin-top:1.5rem;transition-delay:.24s">
+      <div class="tcard-airline">
+        <div><div class="aname">🚗 Road Trip</div><div class="anum">Bangkok → Pattaya via Highway 7</div></div>
+        <span class="road-badge">🛣️ ~150 km · ~2 hrs</span>
+      </div>
+      <div class="tcard-route">
+        <div class="rcity">
+          <div class="rcode" style="font-size:1.6rem">BKK</div>
+          <div class="rname">Bangkok</div>
+          <div class="rtime" style="color:var(--gold)">Morning</div>
+          <div class="rdate">Thu 14 Jan</div>
+        </div>
+        <div class="rmid">
+          <span style="font-size:2rem;animation:floatemoji 2s ease-in-out infinite;display:block">🚗</span>
+          <div class="rline" style="background:linear-gradient(90deg,var(--gold),var(--green))"></div>
+          <div class="rdur">Highway 7 · Eastern Seaboard</div>
+        </div>
+        <div class="rcity">
+          <div class="rcode" style="font-size:1.6rem">PYX</div>
+          <div class="rname">Pattaya</div>
+          <div class="rtime" style="color:var(--gold)">Afternoon</div>
+          <div class="rdate">Thu 14 Jan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="container">
+    <div class="reveal">
+      <span class="stag">// day by day</span>
+      <h2 class="stitle">THE <span class="gold">ITINERARY</span></h2>
+      <p class="ssub">Every glorious moment mapped out. Click each day to expand. Zero regrets, maximum memories.</p>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-dot">1</div>
+        <div class="tl-card" onclick="toggleTl(this)">
+          <div class="tl-head">
+            <div>
+              <div class="tl-day">WED, 13 JAN 2027</div>
+              <div class="tl-title">🛫 The Journey Begins — Bangalore to Bangkok</div>
+            </div>
+            <div class="tl-emoji">✈️</div>
+          </div>
+          <div class="tl-body open">
+            <p class="tl-desc">Midnight departure from BLR. Land at Suvarnabhumi at 07:20 ICT. Thailand, we're HERE! 🎉</p>
+            <div class="chips">
+              <span class="chip">🕐 02:00 BLR Departure (IST)</span>
+              <span class="chip">🌅 07:20 Bangkok Landing (ICT)</span>
+              <span class="chip">🏨 Hotel Check-in & Freshen Up</span>
+              <span class="chip">🛺 Tuk-tuk to Old Town</span>
+              <span class="chip">🏯 Grand Palace Visit</span>
+              <span class="chip">⛩️ Wat Arun Sunset</span>
+              <span class="chip">🍜 Pad Thai Street Food</span>
+              <span class="chip">☕ Roots Coffee Roaster</span>
+              <span class="chip">🍻 Khao San Road Night Out</span>
+              <span class="chip">🎵 Levels Club / Onyx</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" style="transition-delay:.05s">
+        <div class="tl-dot">2</div>
+        <div class="tl-card" onclick="toggleTl(this)">
+          <div class="tl-head">
+            <div>
+              <div class="tl-day">THU, 14 JAN 2027</div>
+              <div class="tl-title">🚗 Bangkok → Pattaya — Road Trip Begins!</div>
+            </div>
+            <div class="tl-emoji">🛣️</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Check out of Bangkok. 2-hour road trip on Highway 7 to the party capital. Pattaya, here we come! 🏖️</p>
+            <div class="chips">
+              <span class="chip">☕ Morning Coffee at Factory Coffee</span>
+              <span class="chip">🧳 Hotel Check-out</span>
+              <span class="chip">🚗 2-hr Road Trip → Pattaya</span>
+              <span class="chip">🏨 Pattaya Hotel Check-in</span>
+              <span class="chip">🤿 Water Sports on Beach</span>
+              <span class="chip">🏄 Jet Ski / Parasailing</span>
+              <span class="chip">🏝️ Coral Island Day Trip</span>
+              <span class="chip">🦞 Fresh Seafood Dinner</span>
+              <span class="chip">🌃 Walking Street Night</span>
+              <span class="chip">😈 Lucifer Disco</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" style="transition-delay:.1s">
+        <div class="tl-dot">3</div>
+        <div class="tl-card" onclick="toggleTl(this)">
+          <div class="tl-head">
+            <div>
+              <div class="tl-day">FRI, 15 JAN 2027</div>
+              <div class="tl-title">🏖️ Pattaya Day 2 — Full Beach & Culture Mode</div>
+            </div>
+            <div class="tl-emoji">🌊</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Sun, sea, temples, and shenanigans. Full Pattaya experience day. Walk it off. 😎</p>
+            <div class="chips">
+              <span class="chip">🌅 Sunrise Beach Walk</span>
+              <span class="chip">🏛️ Sanctuary of Truth</span>
+              <span class="chip">🌳 Nong Nooch Tropical Garden</span>
+              <span class="chip">🎨 Art in Paradise Cafe</span>
+              <span class="chip">💆 Thai Massage Session</span>
+              <span class="chip">☁️ Coffee Clouds Cafe</span>
+              <span class="chip">🛍️ Central Festival Pattaya</span>
+              <span class="chip">🎸 Mojo Bar Live Music</span>
+              <span class="chip">🌃 Walking Street Round 2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" style="transition-delay:.15s">
+        <div class="tl-dot">4</div>
+        <div class="tl-card" onclick="toggleTl(this)">
+          <div class="tl-head">
+            <div>
+              <div class="tl-day">SAT, 16 JAN 2027</div>
+              <div class="tl-title">✈️ Pattaya → Phuket — The Grand Island Awaits</div>
+            </div>
+            <div class="tl-emoji">🌴</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Morning in Pattaya, afternoon drive to Don Mueang airport, AirAsia FD3017 at 15:15. Land in Phuket 16:50. 🏝️</p>
+            <div class="chips">
+              <span class="chip">🌅 Last Pattaya Morning</span>
+              <span class="chip">☕ Surf House Cafe & Smoothie</span>
+              <span class="chip">🚗 Drive to Don Mueang (DMK)</span>
+              <span class="chip">🕐 15:15 AirAsia FD3017 Dep</span>
+              <span class="chip">🕒 16:50 Phuket Int'l Landing</span>
+              <span class="chip">🏨 Phuket Hotel Check-in</span>
+              <span class="chip">🌊 Patong Beach Evening</span>
+              <span class="chip">🌃 Bangla Road First Night</span>
+              <span class="chip">💡 Illuzion Club</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" style="transition-delay:.2s">
+        <div class="tl-dot">5</div>
+        <div class="tl-card" onclick="toggleTl(this)">
+          <div class="tl-head">
+            <div>
+              <div class="tl-day">SUN, 17 JAN 2027</div>
+              <div class="tl-title">🛥️ Phuket Day 2 — Island Hopping!</div>
+            </div>
+            <div class="tl-emoji">🏝️</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Phi Phi Islands, Big Buddha, Phang Nga Bay. This is the postcard day. 📸</p>
+            <div class="chips">
+              <span class="chip">🛥️ Phi Phi Islands Tour</span>
+              <span class="chip">🤿 Snorkeling Maya Bay</span>
+              <span class="chip">⛵ Phang Nga Bay Kayak</span>
+              <span class="chip">🗿 Big Buddha Visit</span>
+              <span class="chip">🏖️ Surin Beach Swim</span>
+              <span class="chip">🚪 Yellow Door Cafe Old Town</span>
+              <span class="chip">🛍️ Jungceylon Shopping Mall</span>
+              <span class="chip">🦞 Beach Seafood BBQ</span>
+              <span class="chip">🐯 Tiger Nightclub</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" style="transition-delay:.25s">
+        <div class="tl-dot">6</div>
+        <div class="tl-card" onclick="toggleTl(this)">
+          <div class="tl-head">
+            <div>
+              <div class="tl-day">MON, 18 JAN 2027</div>
+              <div class="tl-title">🥂 Phuket Day 3 — The Grand Finale Night</div>
+            </div>
+            <div class="tl-emoji">🎊</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Last full night. This is the LAST HURRAH before Prasoon enters the married zone. MAKE IT LEGENDARY! 👑</p>
+            <div class="chips">
+              <span class="chip">🏖️ Beach Day — Patong</span>
+              <span class="chip">💆 Spa & Massage Day</span>
+              <span class="chip">🏠 Shelter Coffee Espresso</span>
+              <span class="chip">🌿 Cherngtalay Coffee</span>
+              <span class="chip">🍾 Special Bachelor Dinner</span>
+              <span class="chip">🎤 Karaoke Madness</span>
+              <span class="chip">🌃 Bangla Road Grand Finale</span>
+              <span class="chip">💡 Illuzion or Tiger — Your Call!</span>
+              <span class="chip">🌅 Watch the Last Thailand Sunrise</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" style="transition-delay:.3s">
+        <div class="tl-dot">7</div>
+        <div class="tl-card" onclick="toggleTl(this)">
+          <div class="tl-head">
+            <div>
+              <div class="tl-day">TUE, 19 JAN 2027</div>
+              <div class="tl-title">🛬 Back to Reality — See You Bangalore! 👋</div>
+            </div>
+            <div class="tl-emoji">👑</div>
+          </div>
+          <div class="tl-body">
+            <p class="tl-desc">Akasa Air QP-624 at 17:00 HKT. Land in Bengaluru at 19:10 IST. The wedding is next. This was the warm-up. 💍</p>
+            <div class="chips">
+              <span class="chip">🌅 Sunrise Goodbye Phuket</span>
+              <span class="chip">☕ One Last Thai Coffee</span>
+              <span class="chip">🛍️ Last Minute Souvenirs</span>
+              <span class="chip">🧳 Hotel Check-out</span>
+              <span class="chip">🕔 17:00 Akasa QP-624 Dep (HKT)</span>
+              <span class="chip">🕖 19:10 BLR Arrival (IST)</span>
+              <span class="chip">🏠 Back Home, Rested & Married Soon!</span>
+              <span class="chip">💍 Wedding Incoming!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CITY EXPLORER -->
+<section id="cities">
+  <div class="container">
+    <div class="reveal">
+      <span class="stag">// explore each city</span>
+      <h2 class="stitle">CITY <span class="purple">EXPLORER</span></h2>
+      <p class="ssub">From morning chai to midnight madness — the best spots in Bangkok, Pattaya & Phuket.</p>
+    </div>
+    <div class="city-tabs reveal">
+      <button class="ctab active" onclick="switchCity('bangkok',this)">🏙️ Bangkok</button>
+      <button class="ctab" onclick="switchCity('pattaya',this)">🏖️ Pattaya</button>
+      <button class="ctab" onclick="switchCity('phuket',this)">🌴 Phuket</button>
+    </div>
+
+    <!-- BANGKOK -->
+    <div class="cpanel active" id="city-bangkok">
+      <div class="city-hdr reveal">
+        <div class="city-emoji2">🏯</div>
+        <div class="city-info2">
+          <h3>Bangkok</h3>
+          <p>City of Angels · Population 10M · GMT+7 (ICT)</p>
+          <p style="margin-top:.3rem">The city that never sleeps, never judges, and never disappoints. Streets full of stories.</p>
+          <span class="city-stay2">🗓️ 1 Night Stay · Jan 13–14</span>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>🗺️ Must-Visit Tourist Spots</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🏯</div><div class="spot-det"><h5>Grand Palace</h5><p>Thailand's most iconic landmark. The royal palace complex with Wat Phra Kaew inside. Breathtaking.</p><span class="stag2" style="background:rgba(255,215,0,.12);color:var(--gold)">Must-See</span></div></div>
+          <div class="spot"><div class="spot-ic">⛩️</div><div class="spot-det"><h5>Wat Arun</h5><p>Temple of Dawn on the Chao Phraya river. Even better at sunset — golden hour magic.</p><span class="stag2" style="background:rgba(0,245,212,.12);color:var(--cyan)">Sunset Spot</span></div></div>
+          <div class="spot"><div class="spot-ic">🛺</div><div class="spot-det"><h5>Khao San Road</h5><p>The legendary backpacker street. Drinks, street food, live music — infinite chaos all night.</p><span class="stag2" style="background:rgba(255,45,120,.12);color:var(--pink)">Party Zone</span></div></div>
+          <div class="spot"><div class="spot-ic">🛍️</div><div class="spot-det"><h5>Chatuchak Weekend Market</h5><p>8,000 stalls! Asia's largest weekend market. Find anything from antiques to streetwear.</p><span class="stag2" style="background:rgba(157,78,221,.12);color:var(--purple)">Shopping</span></div></div>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>☕ Coffee Shops & Vibes</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">☕</div><div class="spot-det"><h5>Roots Coffee Roaster</h5><p>Bangkok's specialty coffee pioneer. Single-origin beans, pour-overs, beautiful space.</p><span class="stag2" style="background:rgba(255,215,0,.12);color:var(--gold)">Specialty</span></div></div>
+          <div class="spot"><div class="spot-ic">🏭</div><div class="spot-det"><h5>Factory Coffee</h5><p>Industrial-chic roastery in Silom area. Excellent espresso and killer cold brew.</p><span class="stag2" style="background:rgba(0,245,212,.12);color:var(--cyan)">Trendy</span></div></div>
+          <div class="spot"><div class="spot-ic">🌿</div><div class="spot-det"><h5>Ceresia Coffee Roasters</h5><p>Hidden gem cafe with great pour-overs and a cozy, art-filled atmosphere.</p><span class="stag2" style="background:rgba(6,214,160,.12);color:var(--green)">Hidden Gem</span></div></div>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>🎊 Nightlife & Party Spots</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🎉</div><div class="spot-det"><h5>Levels Club & Lounge</h5><p>Sukhumvit's most popular multi-floor club. 3 floors, different vibes. Book ahead!</p><span class="stag2" style="background:rgba(255,45,120,.12);color:var(--pink)">Top Club</span></div></div>
+          <div class="spot"><div class="spot-ic">🎵</div><div class="spot-det"><h5>Onyx Nightclub</h5><p>Bangkok's superclub. World-class DJs, massive LED dance floor, insane production.</p><span class="stag2" style="background:rgba(157,78,221,.12);color:var(--purple)">Superclub</span></div></div>
+          <div class="spot"><div class="spot-ic">🌆</div><div class="spot-det"><h5>Sky Bar (Lebua Hotel)</h5><p>The Hangover movie's rooftop bar! Incredible 360° city views. Dress code enforced.</p><span class="stag2" style="background:rgba(255,215,0,.12);color:var(--gold)">Iconic</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PATTAYA -->
+    <div class="cpanel" id="city-pattaya">
+      <div class="city-hdr reveal">
+        <div class="city-emoji2">🏖️</div>
+        <div class="city-info2">
+          <h3>Pattaya</h3>
+          <p>Party City · 150km from Bangkok · GMT+7 (ICT)</p>
+          <p style="margin-top:.3rem">The city that literally wrote the rulebook on bachelor trips. No filter needed here.</p>
+          <span class="city-stay2">🗓️ 3 Nights Stay · Jan 14–16</span>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>🗺️ Must-Visit Tourist Spots</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🏝️</div><div class="spot-det"><h5>Coral Island (Koh Larn)</h5><p>Crystal clear waters, 6 beautiful beaches, amazing snorkeling. 20-min speedboat ride.</p><span class="stag2" style="background:rgba(0,245,212,.12);color:var(--cyan)">Top Pick</span></div></div>
+          <div class="spot"><div class="spot-ic">🏛️</div><div class="spot-det"><h5>Sanctuary of Truth</h5><p>All-wood temple masterpiece, 105m tall. Carved with mythological figures. Breathtaking.</p><span class="stag2" style="background:rgba(255,215,0,.12);color:var(--gold)">Landmark</span></div></div>
+          <div class="spot"><div class="spot-ic">🌳</div><div class="spot-det"><h5>Nong Nooch Garden</h5><p>Stunning botanical garden. Elephant shows, cactus garden, amazing Thai cultural shows.</p><span class="stag2" style="background:rgba(6,214,160,.12);color:var(--green)">Nature</span></div></div>
+          <div class="spot"><div class="spot-ic">🏄</div><div class="spot-det"><h5>Pattaya Beach</h5><p>Jet skiing, parasailing, banana boats. Full beach scene all day long.</p><span class="stag2" style="background:rgba(0,180,216,.12);color:var(--blue)">Water Sports</span></div></div>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>☕ Coffee Shops & Vibes</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🎨</div><div class="spot-det"><h5>Art in Paradise Cafe</h5><p>3D art museum with amazing coffee. Perfect for fun group photos with wild optical illusions!</p><span class="stag2" style="background:rgba(157,78,221,.12);color:var(--purple)">📸 Insta-worthy</span></div></div>
+          <div class="spot"><div class="spot-ic">☁️</div><div class="spot-det"><h5>Coffee Clouds</h5><p>Elevated coffee experience. Great views, perfect for recovering with a cold brew morning.</p><span class="stag2" style="background:rgba(0,245,212,.12);color:var(--cyan)">Views</span></div></div>
+          <div class="spot"><div class="spot-ic">🌊</div><div class="spot-det"><h5>Surf House Cafe</h5><p>Coffee + indoor surfing simulator! Grab a smoothie and ride the wave.</p><span class="stag2" style="background:rgba(0,180,216,.12);color:var(--blue)">Unique</span></div></div>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>🎊 Nightlife & Party Spots</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🌃</div><div class="spot-det"><h5>Walking Street</h5><p>Southeast Asia's most famous party strip. 1km of pure madness after 9PM. Unmissable.</p><span class="stag2" style="background:rgba(255,45,120,.12);color:var(--pink)">Legendary</span></div></div>
+          <div class="spot"><div class="spot-ic">😈</div><div class="spot-det"><h5>Lucifer Disco</h5><p>Pattaya's oldest and most iconic club on Walking Street. Dance till the sun comes up!</p><span class="stag2" style="background:rgba(255,45,120,.12);color:var(--pink)">Icon</span></div></div>
+          <div class="spot"><div class="spot-ic">🎸</div><div class="spot-det"><h5>Mojo Bar Pattaya</h5><p>Brilliant live music bar. Rock bands, cold beers, loud fun — the vibe is immaculate.</p><span class="stag2" style="background:rgba(157,78,221,.12);color:var(--purple)">Live Music</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHUKET -->
+    <div class="cpanel" id="city-phuket">
+      <div class="city-hdr reveal">
+        <div class="city-emoji2">🌴</div>
+        <div class="city-info2">
+          <h3>Phuket</h3>
+          <p>Pearl of the Andaman Sea · Island Paradise · GMT+7 (ICT)</p>
+          <p style="margin-top:.3rem">The grand finale. Thailand's crown jewel. The island that earns its legendary reputation every night.</p>
+          <span class="city-stay2">🗓️ 2 Nights Stay · Jan 16–19</span>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>🗺️ Must-Visit Tourist Spots</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🏝️</div><div class="spot-det"><h5>Phi Phi Islands</h5><p>THE most beautiful islands in Thailand. Maya Bay from "The Beach" movie. Full-day boat tour.</p><span class="stag2" style="background:rgba(0,245,212,.12);color:var(--cyan)">Bucket List</span></div></div>
+          <div class="spot"><div class="spot-ic">🗿</div><div class="spot-det"><h5>Big Buddha</h5><p>45m white marble Buddha statue on Nakkerd Hill. Panoramic views of the whole island.</p><span class="stag2" style="background:rgba(255,215,0,.12);color:var(--gold)">Landmark</span></div></div>
+          <div class="spot"><div class="spot-ic">⛵</div><div class="spot-det"><h5>Phang Nga Bay</h5><p>James Bond Island! Dramatic limestone karsts rising from emerald water. Sea caves, kayaking.</p><span class="stag2" style="background:rgba(0,180,216,.12);color:var(--blue)">Iconic</span></div></div>
+          <div class="spot"><div class="spot-ic">🏖️</div><div class="spot-det"><h5>Patong Beach</h5><p>Most lively beach in Phuket. Crystal waters, watersports galore, beachside cocktail bars.</p><span class="stag2" style="background:rgba(255,45,120,.12);color:var(--pink)">Beach Party</span></div></div>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>☕ Coffee Shops & Vibes</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🚪</div><div class="spot-det"><h5>Yellow Door Cafe</h5><p>Charming cafe in Phuket Old Town's colorful streets. Beautiful decor, fantastic Thai iced coffee.</p><span class="stag2" style="background:rgba(255,215,0,.12);color:var(--gold)">📸 Iconic</span></div></div>
+          <div class="spot"><div class="spot-ic">🏠</div><div class="spot-det"><h5>Shelter Coffee</h5><p>Best specialty cold brew in Phuket. Cozy, Patong area, the vibes are immaculate.</p><span class="stag2" style="background:rgba(0,245,212,.12);color:var(--cyan)">Specialty</span></div></div>
+          <div class="spot"><div class="spot-ic">🌿</div><div class="spot-det"><h5>Cherngtalay Coffee</h5><p>Hipster-chic cafe near Laguna area. Great for slow morning sessions. Excellent pour-overs.</p><span class="stag2" style="background:rgba(6,214,160,.12);color:var(--green)">Chill Zone</span></div></div>
+        </div>
+      </div>
+      <div class="scat">
+        <h4>🎊 Nightlife & Party Spots</h4>
+        <div class="spots-grid">
+          <div class="spot"><div class="spot-ic">🌃</div><div class="spot-det"><h5>Bangla Road</h5><p>Phuket's answer to Walking Street. The strip you absolutely CANNOT miss. It's something else.</p><span class="stag2" style="background:rgba(255,45,120,.12);color:var(--pink)">The Strip</span></div></div>
+          <div class="spot"><div class="spot-ic">💡</div><div class="spot-det"><h5>Illuzion Nightclub</h5><p>Phuket's largest club — 5000 capacity. World-class sound and light show. Pure spectacle.</p><span class="stag2" style="background:rgba(157,78,221,.12);color:var(--purple)">Mega Club</span></div></div>
+          <div class="spot"><div class="spot-ic">🐯</div><div class="spot-det"><h5>Tiger Nightclub</h5><p>Multi-level entertainment complex on Bangla. Live shows, rooftop bar, main floor mayhem.</p><span class="stag2" style="background:rgba(255,215,0,.12);color:var(--gold)">Must Visit</span></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DARE WHEEL -->
+<section id="game">
+  <div class="container">
+    <div class="reveal">
+      <span class="stag">// time to play</span>
+      <h2 class="stitle">BACHELOR <span class="pink">DARE WHEEL</span> 🎰</h2>
+      <p class="ssub" style="margin:0 auto 0">Spin it. Get a dare. Do it. No chickening out — this is a bachelor trip, not a spa day. 😈</p>
+    </div>
+    <div class="game-wrap">
+      <div class="wheel-side reveal">
+        <div style="position:relative;display:inline-block">
+          <canvas id="wheel-canvas" width="340" height="340"></canvas>
+          <div id="wheel-pointer" style="position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:1.6rem">👈</div>
+        </div>
+        <button class="spin-btn" id="spin-btn" onclick="spinWheel()">🎰 SPIN IT!</button>
+      </div>
+      <div class="dare-side reveal" style="transition-delay:.1s">
+        <h3>🎯 Your Dare!</h3>
+        <span class="dare-emoji2" id="dare-emoji">🎲</span>
+        <div class="dare-txt" id="dare-txt">Hit spin to get your dare!</div>
+        <div class="dare-dsc" id="dare-dsc">Every dare becomes a story. Every story becomes a legend.</div>
+        <div id="dare-score" style="margin-top:1rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--dim)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BINGO -->
+<section id="bingo">
+  <div class="container">
+    <div class="reveal">
+      <span class="stag">// the challenge</span>
+      <h2 class="stitle">BACHELOR <span class="gold">BINGO</span> 🎱</h2>
+      <p class="ssub" style="margin:0 auto">Complete challenges during the trip! Click to mark. First to Bingo buys a round for everyone. 🍺</p>
+    </div>
+    <div class="bingo-wrap reveal" style="transition-delay:.1s">
+      <div class="bingo-grid" id="bingo-grid"></div>
+      <div class="bingo-status" id="bingo-status"></div>
+      <div class="bingo-hint" id="bingo-hint">Click any square to mark it when you complete the challenge!</div>
+      <button onclick="resetBingo()" style="margin-top:1rem;padding:.5rem 1.5rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--dim);border-radius:50px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.8rem;transition:all .3s" onmouseover="this.style.borderColor='var(--pink)';this.style.color='var(--pink)'" onmouseout="this.style.borderColor='rgba(255,255,255,.1)';this.style.color='var(--dim)'">↺ Reset Board</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-em">🎊</div>
+    <h2 class="foot-t">SEE YOU IN THAILAND, PRASOON!</h2>
+    <p class="foot-s">Last adventure as a free man. Let's make every second count. The ring can wait — Phuket can't! 🌴</p>
+    <div class="foot-tags">
+      <span class="ftag">✈️ IndiGo 6E-1213 · BLR→BKK</span>
+      <span class="ftag">✈️ AirAsia FD3017 · BKK→HKT</span>
+      <span class="ftag">✈️ Akasa QP-624 · HKT→BLR</span>
+      <span class="ftag">🕐 IST → ICT: +1h 30m</span>
+      <span class="ftag">👑 Prasoon Kumar Parihar</span>
+    </div>
+    <p class="foot-credit">Made with ❤️, too much coffee, and zero regrets · Prasoon's Bachelor Bash · Thailand 2027</p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ===== PARTICLES =====
+(function(){
+  const c = document.getElementById('hero-canvas');
+  const ctx = c.getContext('2d');
+  const cols = ['#ff2d78','#00f5d4','#ffd700','#9d4edd','#06d6a0','#00b4d8'];
+  let pts = [];
+  function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  for(let i=0;i<90;i++) pts.push({
+    x:Math.random()*c.width, y:Math.random()*c.height,
+    r:Math.random()*1.8+.4, vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+    col:cols[Math.floor(Math.random()*cols.length)], a:Math.random()*.5+.15
+  });
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    const g = ctx.createRadialGradient(c.width/2,c.height/2,0,c.width/2,c.height/2,c.width*.7);
+    g.addColorStop(0,'#12063a'); g.addColorStop(1,'#06061a');
+    ctx.fillStyle=g; ctx.fillRect(0,0,c.width,c.height);
+    pts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=c.width; if(p.x>c.width)p.x=0;
+      if(p.y<0)p.y=c.height; if(p.y>c.height)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col; ctx.globalAlpha=p.a; ctx.fill();
+    });
+    ctx.globalAlpha=.04;
+    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+      const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+      if(d<110){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
+        ctx.strokeStyle='#ff2d78'; ctx.lineWidth=.6; ctx.stroke(); }
+    }
+    ctx.globalAlpha=1; requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== CONFETTI =====
+function confetti(){
+  const cols=['#ff2d78','#00f5d4','#ffd700','#9d4edd','#06d6a0','#00b4d8','#ff6b35'];
+  for(let i=0;i<120;i++) setTimeout(()=>{
+    const el=document.createElement('div'); el.className='cpiece';
+    const size=Math.random()*10+5;
+    el.style.cssText=`left:${Math.random()*100}vw;top:0;background:${cols[Math.floor(Math.random()*cols.length)]};width:${size}px;height:${size}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*1.5}s;`;
+    document.body.appendChild(el); setTimeout(()=>el.remove(),6000);
+  },i*25);
+}
+confetti();
+
+// ===== REVEAL =====
+const obs = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ===== TIMELINE =====
+function toggleTl(card){
+  const body = card.querySelector('.tl-body');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.tl-body').forEach(b=>b.classList.remove('open'));
+  if(!isOpen) body.classList.add('open');
+}
+
+// ===== CITY TABS =====
+function switchCity(id,tab){
+  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.cpanel').forEach(p=>p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById('city-'+id).classList.add('active');
+}
+
+// ===== MAP =====
+const map = L.map('map',{center:[10.5,91],zoom:4,scrollWheelZoom:false,zoomControl:true});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  attribution:'© OpenStreetMap contributors'
+}).addTo(map);
+
+const locs = {
+  blr:[12.9716,77.5946], bkk:[13.7563,100.5018],
+  dmk:[13.9126,100.6067], pty:[12.9236,100.8825], hkt:[7.9519,98.3381]
+};
+
+function mkIcon(e,s){
+  return L.divIcon({html:`<div style="font-size:${s||22}px;filter:drop-shadow(0 0 6px rgba(255,45,120,.9))">${e}</div>`,iconAnchor:[12,12],className:''});
+}
+
+// City markers
+[
+  {ll:locs.blr,em:'🏙️',lbl:'<b>Bengaluru (BLR)</b>',sub:'Home | Dep: 02:00 IST, 13 Jan',col:'#ff2d78'},
+  {ll:locs.bkk,em:'🏯',lbl:'<b>Bangkok (BKK/SVB)</b>',sub:'Arr: 07:20 ICT, 13 Jan | 1 night',col:'#00f5d4'},
+  {ll:locs.pty,em:'🏖️',lbl:'<b>Pattaya</b>',sub:'3 nights | Jan 14–16 | Road trip from BKK',col:'#ffd700'},
+  {ll:locs.dmk,em:'🛫',lbl:'<b>Bangkok Don Mueang (DMK)</b>',sub:'Dep: 15:15 ICT, 16 Jan → Phuket',col:'#ff6b35'},
+  {ll:locs.hkt,em:'🌴',lbl:'<b>Phuket (HKT)</b>',sub:'Arr: 16:50 ICT, 16 Jan | 2 nights | Dep: 17:00, 19 Jan',col:'#9d4edd'},
+].forEach(m=>{
+  L.circleMarker(m.ll,{radius:9,color:m.col,fillColor:m.col,fillOpacity:.85,weight:2.5})
+   .addTo(map).bindPopup(`<div style="font-family:Poppins,sans-serif;min-width:180px">${m.lbl}<br><span style="color:#888;font-size:.8rem">${m.sub}</span></div>`);
+  L.marker(m.ll,{icon:mkIcon(m.em,20)}).addTo(map);
+});
+
+// Routes
+const flt={color:'#ff2d78',weight:2.5,dashArray:'9 5',opacity:.85};
+const flt2={color:'#9d4edd',weight:2.5,dashArray:'9 5',opacity:.85};
+const road={color:'#ffd700',weight:3,opacity:.9};
+
+function arc(a,b,lift,steps=40){
+  const pts=[];
+  for(let i=0;i<=steps;i++){
+    const t=i/steps;
+    pts.push([a[0]+(b[0]-a[0])*t+Math.sin(t*Math.PI)*lift, a[1]+(b[1]-a[1])*t]);
+  }
+  return pts;
+}
+L.polyline(arc(locs.blr,locs.bkk,8),flt).addTo(map);
+L.polyline([locs.bkk,locs.pty],road).addTo(map);
+L.polyline([locs.pty,locs.dmk],road).addTo(map);
+L.polyline(arc(locs.dmk,locs.hkt,4),flt).addTo(map);
+L.polyline(arc(locs.hkt,locs.blr,6),flt2).addTo(map);
+
+// Animated plane
+const fullRoute=[
+  ...arc(locs.blr,locs.bkk,8,50),
+  ...arc(locs.bkk,locs.pty,0,15),
+  ...arc(locs.pty,locs.dmk,0,15),
+  ...arc(locs.dmk,locs.hkt,4,30),
+  ...arc(locs.hkt,locs.blr,6,50),
+];
+const planeMarker=L.marker(locs.blr,{icon:mkIcon('✈️',22)}).addTo(map);
+let pIdx=0;
+function animPlane(){
+  if(pIdx<fullRoute.length){ planeMarker.setLatLng(fullRoute[pIdx++]); setTimeout(animPlane,45); }
+  else { pIdx=0; setTimeout(animPlane,1200); }
+}
+setTimeout(animPlane,800);
+
+// ===== DARE WHEEL =====
+const dares=[
+  {t:'Take a shot with a stranger!',e:'🥃',d:'Walk up to someone, say cheers, and down it. No hesitation.'},
+  {t:'Jump in the pool fully clothed!',e:'💦',d:'Clothes and all. No hesitation. Someone films this.'},
+  {t:'Eat the spiciest dish on the menu!',e:'🌶️',d:'Order level 10 spice. No milk allowed until finished.'},
+  {t:'60-min Thai massage right now!',e:'💆',d:"You need it. Book one within the next 2 hours. Doctor's orders."},
+  {t:"Buy everyone a round of shots!",e:'🍺',d:'Big spender energy. King of the trip move. Walk up to the bar.'},
+  {t:'Karaoke solo for the whole group!',e:'🎤',d:'Pick the most embarrassing song. Perform with full commitment.'},
+  {t:'Bargain something to 50% off!',e:'🛍️',d:'Find a street vendor. Negotiate hard. No shame. Buy it.'},
+  {t:'Tuk-tuk ride across the city!',e:'🛺',d:'Negotiate the price. Hop in. Take the scenic route.'},
+  {t:'Mystery street food challenge!',e:'🍢',d:"Point to something you can't identify. Order it. Eat all of it."},
+  {t:'Swim in the ocean at midnight!',e:'🌊',d:'Or whenever possible — the night swim is non-negotiable.'},
+  {t:'Get a henna tattoo!',e:'🎨',d:'Make it wild. Something you would NOT normally get. The groom goes first.'},
+  {t:'Dance battle challenge!',e:'💃',d:'Challenge a stranger on the dance floor. Full commitment required.'},
+];
+const wCols=['#ff2d78','#9d4edd','#00f5d4','#ffd700','#06d6a0','#ff6b35','#00b4d8','#ff2d78','#9d4edd','#00f5d4','#ffd700','#06d6a0'];
+const wc=document.getElementById('wheel-canvas');
+const wx=wc.getContext('2d');
+let wAngle=0, wSpinning=false, dareCount=0;
+
+function drawWheel(a){
+  const cx=wc.width/2,cy=wc.height/2,r=cx-12;
+  const slice=Math.PI*2/dares.length;
+  wx.clearRect(0,0,wc.width,wc.height);
+  dares.forEach((d,i)=>{
+    const s=a+slice*i,en=s+slice;
+    wx.beginPath(); wx.moveTo(cx,cy); wx.arc(cx,cy,r,s,en); wx.closePath();
+    wx.fillStyle=wCols[i]; wx.fill();
+    wx.strokeStyle='#06061a'; wx.lineWidth=2; wx.stroke();
+    wx.save(); wx.translate(cx,cy); wx.rotate(s+slice/2);
+    wx.textAlign='right'; wx.font='20px serif';
+    wx.globalAlpha=1;
+    wx.fillText(d.e,r-10,7);
+    wx.restore();
+  });
+  // center
+  wx.beginPath(); wx.arc(cx,cy,28,0,Math.PI*2);
+  wx.fillStyle='#06061a'; wx.fill();
+  wx.strokeStyle='#ff2d78'; wx.lineWidth=3; wx.stroke();
+  wx.fillStyle='white'; wx.font='bold 13px Poppins,sans-serif';
+  wx.textAlign='center'; wx.textBaseline='middle';
+  wx.fillText('GO!',cx,cy);
+  // outer glow ring
+  wx.beginPath(); wx.arc(cx,cy,r+2,0,Math.PI*2);
+  wx.strokeStyle='rgba(255,45,120,.3)'; wx.lineWidth=4; wx.stroke();
+}
+drawWheel(0);
+
+function spinWheel(){
+  if(wSpinning)return;
+  wSpinning=true;
+  document.getElementById('spin-btn').disabled=true;
+  const totalRot=Math.PI*2*(6+Math.random()*6);
+  const dur=4500,start=performance.now(),startA=wAngle;
+  function ease(t){return 1-Math.pow(1-t,4);}
+  function frame(now){
+    const t=Math.min((now-start)/dur,1);
+    wAngle=startA+totalRot*ease(t);
+    drawWheel(wAngle);
+    if(t<1){ requestAnimationFrame(frame); }
+    else {
+      wSpinning=false;
+      document.getElementById('spin-btn').disabled=false;
+      const slice=Math.PI*2/dares.length;
+      const norm=((-wAngle)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);
+      const idx=Math.floor(norm/slice)%dares.length;
+      const dare=dares[idx];
+      document.getElementById('dare-emoji').textContent=dare.e;
+      document.getElementById('dare-txt').textContent=dare.t;
+      document.getElementById('dare-dsc').textContent=dare.d;
+      dareCount++;
+      document.getElementById('dare-score').textContent=`🎯 Dare #${dareCount} · Keep spinning!`;
+      confetti();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+// ===== BINGO =====
+const bItems=[
+  {e:'🌅',t:'Watch Sunrise'},{e:'🍢',t:'Mystery Food'},{e:'🛺',t:'Tuk-tuk Ride'},{e:'💆',t:'Thai Massage'},{e:'🏄',t:'Water Sports'},
+  {e:'☕',t:'Local Coffee'},{e:'📸',t:'100+ Photos'},{e:'🍺',t:'Buy a Round'},{e:'🌶️',t:'Spicy Food Dare'},{e:'🏖️',t:'Beach Swim'},
+  {e:'🎤',t:'Karaoke Solo'},{e:'🛥️',t:'Boat Trip'},{e:'👑',t:'FREE!\nBACHELOR',free:true},{e:'💃',t:'Dance Battle'},{e:'🎨',t:'Henna Tattoo'},
+  {e:'🏝️',t:'Island Hop'},{e:'🛍️',t:'Bargain 50% Off'},{e:'🥃',t:'Shot w/ Stranger'},{e:'🌃',t:'Walking Street'},{e:'🚗',t:'Road Trip Done'},
+  {e:'🏯',t:'Temple Visit'},{e:'🦞',t:'Fresh Seafood'},{e:'🎉',t:'Club Night'},{e:'💦',t:'Jump in Pool'},{e:'🌴',t:'All 3 Cities'},
+];
+let marked=new Array(25).fill(false);
+marked[12]=true;
+
+function buildBingo(){
+  const grid=document.getElementById('bingo-grid'); grid.innerHTML='';
+  bItems.forEach((item,i)=>{
+    const cell=document.createElement('div');
+    cell.className='bcell'+(item.free?' free-cell':'')+(marked[i]&&!item.free?' marked':'');
+    cell.innerHTML=`<div class="bem">${item.e}</div><div>${item.t.replace('\n','<br>')}</div>`;
+    if(!item.free) cell.onclick=()=>{ marked[i]=!marked[i]; buildBingo(); checkBingo(); };
+    grid.appendChild(cell);
+  });
+}
+buildBingo();
+
+function checkBingo(){
+  const lines=[
+    [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
+    [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],
+    [0,6,12,18,24],[4,8,12,16,20]
+  ];
+  const st=document.getElementById('bingo-status');
+  const ht=document.getElementById('bingo-hint');
+  for(const line of lines){
+    if(line.every(i=>marked[i])){ st.textContent='🎉 BINGO! Buy that round!'; confetti(); return; }
+  }
+  const cnt=marked.filter(Boolean).length;
+  if(cnt>=20) st.textContent=`🏆 ${cnt}/25 — So close! Legend!`;
+  else if(cnt>=10) st.textContent=`✅ ${cnt}/25 — Keep going!`;
+  else { st.textContent=''; ht.textContent=`${cnt} done · Click squares to mark challenges!`; return; }
+  ht.textContent=`${cnt} done · Keep marking!`;
+}
+
+function resetBingo(){
+  marked=new Array(25).fill(false); marked[12]=true;
+  document.getElementById('bingo-status').textContent='';
+  document.getElementById('bingo-hint').textContent='Click any square to mark it when you complete the challenge!';
+  buildBingo();
+}
+</script>
+</body>
+</html>

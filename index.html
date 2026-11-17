@@ -472,6 +472,228 @@ section {
   box-shadow: 0 0 20px var(--pink-glow);
 }
 
+
+/* ===== FLIGHT SIMULATOR CONSOLE & HUD OVERLAY ===== */
+.flight-sim-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: rgba(16, 16, 51, 0.95);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--r-md);
+  padding: 0.85rem 1.4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.sim-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: #fff;
+  padding: 0.65rem 1.6rem;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--pink-glow);
+  transition: all 0.25s;
+  user-select: none;
+}
+
+.sim-play-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px var(--pink-glow);
+}
+
+.sim-steps-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sim-step-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 0.45rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sim-step-btn:hover {
+  border-color: var(--cyan);
+  color: #fff;
+}
+
+.sim-step-btn.active {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 18px var(--cyan-glow);
+}
+
+.sim-speed-group {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  padding: 0.2rem;
+  border-radius: 50px;
+}
+
+.sim-speed-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.sim-speed-btn.active {
+  background: var(--pink);
+  color: #fff;
+  box-shadow: 0 0 10px var(--pink-glow);
+}
+
+/* In-Flight Telemetry HUD */
+.flight-hud-overlay {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 1000;
+  background: rgba(8, 8, 28, 0.9);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--border-neon);
+  border-radius: var(--r-md);
+  padding: 1.1rem 1.3rem;
+  width: 285px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.hud-status-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(6, 214, 160, 0.15);
+  color: var(--green);
+  border: 1px solid rgba(6, 214, 160, 0.4);
+  padding: 0.15rem 0.55rem;
+  border-radius: 50px;
+}
+
+.hud-leg-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.hud-telemetry-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.hud-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.hud-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+.hud-progress-bg {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.hud-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--cyan), var(--pink));
+  border-radius: 10px;
+  transition: width 0.08s linear;
+}
+
+/* Vehicle Marker */
+.vehicle-sim-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  filter: drop-shadow(0 0 12px rgba(255, 42, 122, 0.9));
+  pointer-events: none;
+}
+
+/* Arrival Toast on the Map */
+.arrival-toast {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  opacity: 0;
+  z-index: 1001;
+  background: linear-gradient(135deg, rgba(255, 42, 122, 0.95), rgba(131, 56, 236, 0.95));
+  backdrop-filter: blur(15px);
+  color: #fff;
+  padding: 0.9rem 1.8rem;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 15px 50px var(--pink-glow);
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+  white-space: nowrap;
+  max-width: 90%;
+  text-align: center;
+}
+
+.arrival-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
 .map-viewport-wrapper {
   position: relative;
   height: 540px;
@@ -1871,7 +2093,7 @@ footer {
       <p class="ssub">From Bangalore to Bangkok, down Highway 7 to Pattaya, flying to Phuket, and bringing the groom safely back home. Choose your view below!</p>
     </div>
 
-    <!-- Map Controls -->
+    <!-- Map View Switcher Controls -->
     <div class="map-controls-bar reveal">
       <div class="map-toggle-group">
         <button class="map-toggle-btn active" id="btn-view-dark" onclick="setMapViewMode('dark')">
@@ -1885,7 +2107,33 @@ footer {
         </button>
       </div>
       <div style="font-family:'Space Mono',monospace;font-size:0.8rem;color:var(--green)">
-        ● RADAR & SATELLITE FEED ACTIVE
+        ● LIVE FLIGHT SIMULATOR READY
+      </div>
+    </div>
+
+    <!-- Animated Flight Simulator Control Bar -->
+    <div class="flight-sim-bar reveal">
+      <div class="sim-play-btn" id="sim-play-btn" onclick="toggleSimTour()">
+        <span id="sim-play-icon">▶</span> <span id="sim-play-text">Start Flight Simulator</span>
+      </div>
+      <div class="sim-steps-group">
+        <button class="sim-step-btn active" id="sim-step-0" onclick="selectSimStage(0)">
+          <span>🛫</span> 1. BLR ➔ BKK
+        </button>
+        <button class="sim-step-btn" id="sim-step-1" onclick="selectSimStage(1)">
+          <span>🚗</span> 2. BKK ➔ Pattaya
+        </button>
+        <button class="sim-step-btn" id="sim-step-2" onclick="selectSimStage(2)">
+          <span>🌴</span> 3. BKK ➔ Phuket
+        </button>
+        <button class="sim-step-btn" id="sim-step-3" onclick="selectSimStage(3)">
+          <span>💍</span> 4. Phuket ➔ BLR
+        </button>
+      </div>
+      <div class="sim-speed-group">
+        <button class="sim-speed-btn active" onclick="setSimSpeed(1, this)">1x</button>
+        <button class="sim-speed-btn" onclick="setSimSpeed(2, this)">2x</button>
+        <button class="sim-speed-btn" onclick="setSimSpeed(4, this)">4x</button>
       </div>
     </div>
 
@@ -1893,6 +2141,38 @@ footer {
     <div class="map-viewport-wrapper reveal">
       <!-- Leaflet Map Container -->
       <div id="map"></div>
+      
+      <!-- In-Flight Telemetry HUD -->
+      <div class="flight-hud-overlay" id="flight-hud">
+        <div class="hud-header">
+          <span class="hud-status-badge" id="hud-status">READY</span>
+          <span class="hud-leg-title" id="hud-leg">LEG 01: BLR ➔ BKK</span>
+        </div>
+        <div class="hud-telemetry-row">
+          <div class="hud-stat">
+            <span class="hud-lbl">VEHICLE</span>
+            <span class="hud-val" id="hud-vehicle">IndiGo 6E-1213</span>
+          </div>
+          <div class="hud-stat">
+            <span class="hud-lbl">SPEED</span>
+            <span class="hud-val" id="hud-speed">840 km/h</span>
+          </div>
+          <div class="hud-stat">
+            <span class="hud-lbl">ALTITUDE</span>
+            <span class="hud-val" id="hud-altitude">36,000 ft</span>
+          </div>
+          <div class="hud-stat">
+            <span class="hud-lbl">TIME (LOCAL)</span>
+            <span class="hud-val" id="hud-time">02:00 IST</span>
+          </div>
+        </div>
+        <div class="hud-progress-bg">
+          <div class="hud-progress-bar" id="hud-progress-bar"></div>
+        </div>
+      </div>
+
+      <!-- Arrival Toast Message -->
+      <div class="arrival-toast" id="arrival-toast"></div>
       
       <!-- Cyberpunk Radar Canvas Screen -->
       <canvas id="radar-canvas-view"></canvas>
@@ -2915,7 +3195,7 @@ const obs = new IntersectionObserver(es => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-// ===== 4. MAP IMPLEMENTATION (ESRI WORLD DARK + SATELLITE + CYBERPUNK RADAR) =====
+// ===== 4. MAP IMPLEMENTATION & ANIMATED FLIGHT/ROAD SIMULATOR =====
 const mapContainer = document.getElementById('map');
 const radarCanvas = document.getElementById('radar-canvas-view');
 
@@ -2927,12 +3207,12 @@ const coords = {
   hkt: [7.9519, 98.3381]
 };
 
-// Initialize Leaflet Map centered between India and Thailand
+// Initialize Leaflet Map
 const map = L.map('map', {
-  center: [12.0, 89.0],
-  zoom: 4,
+  center: [13.0, 78.5],
+  zoom: 6,
   minZoom: 3,
-  maxZoom: 12,
+  maxZoom: 14,
   scrollWheelZoom: false,
   zoomControl: true
 });
@@ -2943,26 +3223,23 @@ const esriDark = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/servic
   maxZoom: 16
 });
 
-// Esri Reference Labels (Countries, cities, coastlines)
 const esriLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
   attribution: '',
   maxZoom: 16
 });
 
-// Esri High-Res Satellite Imagery
 const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   attribution: 'Tiles &copy; Esri',
   maxZoom: 18
 });
 
-// Add Dark Gray & Labels as default layers
 esriDark.addTo(map);
 esriLabels.addTo(map);
 
 setTimeout(() => map.invalidateSize(), 350);
 window.addEventListener('resize', () => map.invalidateSize());
 
-// Custom Emoji Markers
+// City Markers
 function makeIcon(emoji, size = 24){
   return L.divIcon({
     html: `<div style="font-size:${size}px;filter:drop-shadow(0 0 10px rgba(255,42,122,0.9));cursor:pointer">${emoji}</div>`,
@@ -2995,8 +3272,8 @@ destinations.forEach(d => {
   L.marker(d.ll, { icon: makeIcon(d.emoji, 22) }).addTo(map);
 });
 
-// Flight Arc Generator
-function makeArc(p1, p2, lift = 6, steps = 40){
+// Great Circle Arc Point Generator
+function generateArcPoints(p1, p2, lift = 6, steps = 60){
   const pts = [];
   for(let i = 0; i <= steps; i++){
     const t = i / steps;
@@ -3007,41 +3284,309 @@ function makeArc(p1, p2, lift = 6, steps = 40){
   return pts;
 }
 
-// Neon Route Lines
-const flightStyle = { color: '#ff2a7a', weight: 3.2, dashArray: '8 6', opacity: 0.9 };
-const flightStyleReturn = { color: '#8338ec', weight: 3.2, dashArray: '8 6', opacity: 0.9 };
-const roadStyle = { color: '#ffbe0b', weight: 4.5, opacity: 0.95 };
+// Realistic Highway 7 Motorway Waypoints from Bangkok to Pattaya
+function generateRoadPoints(){
+  const waypoints = [
+    [13.7563, 100.5018], // Bangkok City Center
+    [13.7380, 100.6300], // Rama IX
+    [13.7220, 100.7500], // Lat Krabang Suvarnabhumi junction
+    [13.6200, 100.9500], // Bang Pakong River crossing
+    [13.3611, 100.9847], // Chonburi Outer Ring
+    [13.2500, 100.9600], // Bang Saen Bypass
+    [13.1737, 100.9311], // Sri Racha Motorway
+    [13.0300, 100.9200], // Laem Chabang Bypass
+    [12.9600, 100.9000], // North Pattaya Road
+    [12.9236, 100.8825]  // Pattaya Beachfront & Walking Street
+  ];
+  const detailed = [];
+  for(let i = 0; i < waypoints.length - 1; i++){
+    const pA = waypoints[i];
+    const pB = waypoints[i+1];
+    const subSteps = 8;
+    for(let j = 0; j < subSteps; j++){
+      const f = j / subSteps;
+      detailed.push([pA[0] + (pB[0] - pA[0]) * f, pA[1] + (pB[1] - pA[1]) * f]);
+    }
+  }
+  detailed.push(waypoints[waypoints.length - 1]);
+  return detailed;
+}
 
-L.polyline(makeArc(coords.blr, coords.bkk, 7.5), flightStyle).addTo(map);
-L.polyline([coords.bkk, coords.pty], roadStyle).addTo(map);
-L.polyline([coords.pty, coords.dmk], roadStyle).addTo(map);
-L.polyline(makeArc(coords.dmk, coords.hkt, 3.5), flightStyle).addTo(map);
-L.polyline(makeArc(coords.hkt, coords.blr, 6.5), flightStyleReturn).addTo(map);
+// Bearing Calculator for Vehicle Rotation
+function calculateBearing(p1, p2){
+  const lat1 = p1[0] * Math.PI / 180;
+  const lon1 = p1[1] * Math.PI / 180;
+  const lat2 = p2[0] * Math.PI / 180;
+  const lon2 = p2[1] * Math.PI / 180;
+  const dLon = lon2 - lon1;
+  const y = Math.sin(dLon) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+  return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+}
 
-// Animated Plane
-const animatedRoute = [
-  ...makeArc(coords.blr, coords.bkk, 7.5, 55),
-  ...makeArc(coords.bkk, coords.pty, 0, 18),
-  ...makeArc(coords.pty, coords.dmk, 0, 18),
-  ...makeArc(coords.dmk, coords.hkt, 3.5, 32),
-  ...makeArc(coords.hkt, coords.blr, 6.5, 55)
+// STAGE DEFINITIONS (ONE COUNTRY/REGION AT A TIME)
+const simStages = [
+  {
+    title: 'LEG 01: BLR ➔ BKK',
+    sector: 'INDIA ➔ THAILAND',
+    vehicleName: 'IndiGo 6E-1213 (A321)',
+    vehicleType: 'plane',
+    emoji: '✈️',
+    speed: '840 km/h',
+    altitude: '36,000 ft',
+    time: '02:00 IST (Wed 13 Jan)',
+    color: '#ff2a7a',
+    points: generateArcPoints(coords.blr, coords.bkk, 7.5, 75),
+    cameraStart: { center: [13.0, 78.5], zoom: 6 },
+    cameraMid: { center: [13.5, 89.0], zoom: 4.8 },
+    cameraEnd: { center: [13.75, 100.5], zoom: 8 },
+    arrivalText: '🛬 TOUCHDOWN IN BANGKOK! 07:20 ICT Wed 13 Jan · 1 Night Stay · Grand Palace & Khao San Road Ahead!'
+  },
+  {
+    title: 'LEG 02: BKK ➔ PATTAYA',
+    sector: 'THAILAND COASTAL HIGHWAY',
+    vehicleName: 'Highway 7 Cruiser',
+    vehicleType: 'car',
+    emoji: '🚗',
+    speed: '110 km/h',
+    altitude: '40 ft',
+    time: '11:00 ICT (Thu 14 Jan)',
+    color: '#ffbe0b',
+    points: generateRoadPoints(),
+    cameraStart: { center: [13.75, 100.5], zoom: 8.5 },
+    cameraMid: { center: [13.35, 100.85], zoom: 8.5 },
+    cameraEnd: { center: [12.92, 100.88], zoom: 9 },
+    arrivalText: '🏖️ WELCOME TO PATTAYA! Jan 14–16 · 3 Nights Stay · Coral Island, Speedboats & Walking Street!'
+  },
+  {
+    title: 'LEG 03: DMK ➔ PHUKET',
+    sector: 'GULF OF THAILAND ➔ ANDAMAN',
+    vehicleName: 'Thai AirAsia FD3017',
+    vehicleType: 'plane',
+    emoji: '✈️',
+    speed: '780 km/h',
+    altitude: '32,000 ft',
+    time: '15:15 ICT (Sat 16 Jan)',
+    color: '#00f0ff',
+    points: generateArcPoints(coords.dmk, coords.hkt, 3.5, 55),
+    cameraStart: { center: [13.9, 100.6], zoom: 7.5 },
+    cameraMid: { center: [11.0, 99.8], zoom: 6.5 },
+    cameraEnd: { center: [7.95, 98.33], zoom: 8.5 },
+    arrivalText: '🌴 TOUCHDOWN IN PHUKET! 16:50 ICT Sat 16 Jan · 2 Nights Stay · Phi Phi Islands & Bangla Road!'
+  },
+  {
+    title: 'LEG 04: PHUKET ➔ BLR',
+    sector: 'ANDAMAN SEA ➔ INDIA',
+    vehicleName: 'Akasa Air QP-624 (B737)',
+    vehicleType: 'plane',
+    emoji: '✈️',
+    speed: '820 km/h',
+    altitude: '38,000 ft',
+    time: '17:00 ICT (Tue 19 Jan)',
+    color: '#8338ec',
+    points: generateArcPoints(coords.hkt, coords.blr, 6.5, 75),
+    cameraStart: { center: [7.95, 98.33], zoom: 7 },
+    cameraMid: { center: [10.5, 88.0], zoom: 4.8 },
+    cameraEnd: { center: [12.97, 77.59], zoom: 7 },
+    arrivalText: '💍 MISSION ACCOMPLISHED! Groom Safely Delivered to Bangalore for the Wedding!'
+  }
 ];
 
-const planeMarker = L.marker(coords.blr, { icon: makeIcon('✈️', 26) }).addTo(map);
-let planeIndex = 0;
+// Active State Variables
+let simStageIndex = 0;
+let simPointIndex = 0;
+let simPlaying = false;
+let simSpeedMultiplier = 1;
+let simInterval = null;
+let drawnPolylines = [];
+let currentTrailPolyline = null;
 
-function movePlane(){
-  if(planeIndex < animatedRoute.length){
-    planeMarker.setLatLng(animatedRoute[planeIndex++]);
-    setTimeout(movePlane, 40);
+// Vehicle Marker
+let vehicleElement = document.createElement('div');
+vehicleElement.className = 'vehicle-sim-marker';
+vehicleElement.innerHTML = '✈️';
+
+const vehicleIcon = L.divIcon({
+  html: vehicleElement,
+  iconAnchor: [16, 16],
+  className: ''
+});
+
+const vehicleMarker = L.marker(simStages[0].points[0], { icon: vehicleIcon, zIndexOffset: 1000 }).addTo(map);
+
+// Initialize static baseline lines with subtle opacity
+simStages.forEach(st => {
+  L.polyline(st.points, {
+    color: st.color,
+    weight: st.vehicleType === 'car' ? 3.5 : 2.5,
+    dashArray: st.vehicleType === 'car' ? null : '6 6',
+    opacity: 0.25
+  }).addTo(map);
+});
+
+// Setup simulator stage
+function setupStage(stageIdx){
+  simStageIndex = stageIdx;
+  simPointIndex = 0;
+  const stage = simStages[simStageIndex];
+
+  // Update UI selector buttons
+  for(let i = 0; i < 4; i++){
+    const btn = document.getElementById('sim-step-' + i);
+    if(btn) btn.classList.toggle('active', i === simStageIndex);
+  }
+
+  // Update Vehicle Emoji
+  vehicleElement.innerHTML = stage.emoji;
+
+  // Clear previous active trail
+  if(currentTrailPolyline){
+    currentTrailPolyline.remove();
+  }
+  currentTrailPolyline = L.polyline([], {
+    color: stage.color,
+    weight: stage.vehicleType === 'car' ? 5 : 3.5,
+    opacity: 0.95,
+    lineCap: 'round'
+  }).addTo(map);
+
+  // Position vehicle at start
+  const startPt = stage.points[0];
+  vehicleMarker.setLatLng(startPt);
+
+  // Focus Camera on Start Location
+  map.flyTo(stage.cameraStart.center, stage.cameraStart.zoom, { duration: 1.2 });
+
+  // Update HUD
+  updateHUD(stage, 0);
+}
+
+function updateHUD(stage, progressPercent){
+  document.getElementById('hud-status').textContent = simPlaying ? (stage.vehicleType === 'car' ? 'DRIVING' : 'CRUISING') : 'READY';
+  document.getElementById('hud-leg').textContent = stage.title;
+  document.getElementById('hud-vehicle').textContent = stage.vehicleName;
+  document.getElementById('hud-speed').textContent = stage.speed;
+  document.getElementById('hud-altitude').textContent = stage.altitude;
+  document.getElementById('hud-time').textContent = stage.time;
+  document.getElementById('hud-progress-bar').style.width = progressPercent + '%';
+}
+
+function showArrivalToast(msg){
+  const toast = document.getElementById('arrival-toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  confetti();
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 4500);
+}
+
+// Tick Simulation Frame
+function simTick(){
+  if(!simPlaying) return;
+  const stage = simStages[simStageIndex];
+  const pts = stage.points;
+
+  if(simPointIndex < pts.length){
+    const currentPt = pts[simPointIndex];
+    vehicleMarker.setLatLng(currentPt);
+    currentTrailPolyline.addLatLng(currentPt);
+
+    // Calculate rotation bearing
+    if(simPointIndex < pts.length - 1){
+      const nextPt = pts[simPointIndex + 1];
+      const bearing = calculateBearing(currentPt, nextPt);
+      // Emoji airplane baseline points northeast (~45deg), compensate by -45
+      const rotateOffset = stage.vehicleType === 'plane' ? -45 : 0;
+      vehicleElement.style.transform = `rotate(${bearing + rotateOffset}deg)`;
+    }
+
+    // Mid-stage camera transition
+    const progress = simPointIndex / (pts.length - 1);
+    updateHUD(stage, Math.round(progress * 100));
+
+    if(progress > 0.4 && progress < 0.6){
+      map.panTo(stage.cameraMid.center, { animate: true, duration: 0.5 });
+    }
+
+    simPointIndex++;
   } else {
-    planeIndex = 0;
-    setTimeout(movePlane, 1500);
+    // Stage Completed!
+    simPlaying = false;
+    clearInterval(simInterval);
+    simInterval = null;
+
+    // Zoom into arrival location
+    map.flyTo(stage.cameraEnd.center, stage.cameraEnd.zoom, { duration: 1.0 });
+
+    // Show celebration toast
+    showArrivalToast(stage.arrivalText);
+    updateHUD(stage, 100);
+
+    // Auto-advance to next stage after 3 seconds
+    setTimeout(() => {
+      const nextStageIdx = (simStageIndex + 1) % simStages.length;
+      setupStage(nextStageIdx);
+      // Auto-start next leg!
+      startSimTour();
+    }, 3200);
   }
 }
-setTimeout(movePlane, 800);
 
-// Map Mode Switcher (Dark / Satellite / Radar)
+function startSimTour(){
+  simPlaying = true;
+  document.getElementById('sim-play-icon').textContent = '⏸';
+  document.getElementById('sim-play-text').textContent = 'Pause Simulator';
+  document.getElementById('hud-status').textContent = simStages[simStageIndex].vehicleType === 'car' ? 'DRIVING' : 'CRUISING';
+
+  if(simInterval) clearInterval(simInterval);
+  const frameDelay = Math.max(16, Math.floor(45 / simSpeedMultiplier));
+  simInterval = setInterval(simTick, frameDelay);
+}
+
+function pauseSimTour(){
+  simPlaying = false;
+  document.getElementById('sim-play-icon').textContent = '▶';
+  document.getElementById('sim-play-text').textContent = 'Resume Simulator';
+  document.getElementById('hud-status').textContent = 'PAUSED';
+  if(simInterval){
+    clearInterval(simInterval);
+    simInterval = null;
+  }
+}
+
+function toggleSimTour(){
+  if(simPlaying){
+    pauseSimTour();
+  } else {
+    startSimTour();
+  }
+}
+
+function selectSimStage(idx){
+  pauseSimTour();
+  setupStage(idx);
+  startSimTour();
+}
+
+function setSimSpeed(speed, btn){
+  simSpeedMultiplier = speed;
+  document.querySelectorAll('.sim-speed-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if(simPlaying){
+    startSimTour();
+  }
+}
+
+// Initial Setup at Stage 0 (BLR)
+setupStage(0);
+
+// Auto-start map tour after 1.5 seconds on page load
+setTimeout(() => {
+  startSimTour();
+}, 1500);
+
+// View Switcher between Leaflet & Cyberpunk Radar
 function setMapViewMode(mode){
   const btnDark = document.getElementById('btn-view-dark');
   const btnSat = document.getElementById('btn-view-sat');
